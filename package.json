@@ -1,0 +1,42 @@
+{
+  "name": "hemaapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sign.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "dev:serve": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "_moduleAliases": {
+    "@": "."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^4.0.5",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "module-alias": "^2.2.3",
+    "nodemon": "^2.0.22",
+    "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "@koa/cors": "^4.0.0",
+    "async": "^3.2.4",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
+    "koa2-connect-history-api-fallback": "^0.1.3",
+    "lodash": "^4.17.21",
+    "pm2": "^4.5.6",
+    "prettier": "^2.2.0",
+    "vant": "^4.6.0",
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2"
+  }
+}
