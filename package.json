@@ -21,7 +21,7 @@
   "license": "ISC",
   "devDependencies": {
     "module-alias": "^2.2.3",
-    "nodemon": "^2.0.22",
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",
