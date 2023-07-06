@@ -190,7 +190,7 @@ const requestByLngLat = async ({ curInfo, kw }) => {
   }
   return _.find(res?.data?.data?.result?.[0]?.cards, function (o) {
     return o?.content?.scheme && o?.content?.text?.indexOf?.('代购') === -1;
-  }).content || {};
+  })?.content || {};
 }
 async function queryAddress({ keyword, lat, lng }) {
   const mockData = {
@@ -224,7 +224,6 @@ async function queryAddress({ keyword, lat, lng }) {
       return requestByLngLat({ curInfo, kw: kwKey });
     })
   );
-  console.log('resList :>> ', resList);
   const queue = [];
   _.map(resList, (list) => {
     if (!Array.isArray(list.value)) {
