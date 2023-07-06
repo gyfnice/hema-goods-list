@@ -150,7 +150,7 @@ async function run(storeId) {
     }); */
   return _.reverse(list);
 }
-const whiteList = ['盒马'];
+const whiteList = ["盒马", "正大优鲜", "永辉超市", "京客隆", "物美", "超市"];
 const requestByLngLat = async ({ curInfo, kw }) => {
   const addressConfig = getSignConfig(
     {
@@ -158,13 +158,10 @@ const requestByLngLat = async ({ curInfo, kw }) => {
       type: "originaljson",
       params: JSON.stringify({
         "appId": "28820",
-        "_input_charset": "UTF-8",
-        "_output_charset": "UTF-8",
         "gatewayApiType": "mtop",
         "x-ele-scene": "search_suggest",
         "mtop_api_version": "1.0",
         "isMtopMiniApp": true,
-        "userId": "1497914586",
         "latitude": curInfo.latitude,
         "longitude": curInfo.longitude,
         "kw": kw,
@@ -177,11 +174,7 @@ const requestByLngLat = async ({ curInfo, kw }) => {
     {
       api: "mtop.relationrecommend.TinyAppRecommend.recommend",
       timeout: 10000,
-      needLogin: true,
-      mainDomain: "ele.me",
-      subDomain: "waimai-guide",
-      H5Request: true,
-      ttid: "h5@safari_ios_604.1"
+      needLogin: false
     }
   );
   const res = await axios.get(

@@ -213,9 +213,7 @@ h = 12574478;
 
 
 function l(a) {
-  var b = new RegExp("(?:^|;\\s*)" + a + "\\=([^;]+)(?:;\\s*|$)").exec(
-    getCookie()
-  );
+  var b = new RegExp("(?:^|;\\s*)" + a + "\\=([^;]+)(?:;\\s*|$)").exec(getCookie());
   return b ? b[1] : void 0;
 }
 
@@ -256,23 +254,6 @@ function l(a) {
 }; */
 
 // i(d.token + "&" + j + "&" + h + "&" + c.data)
-
-//传入参数：
-let params = {
-  jsv: '2.7.1',
-  appKey: '12574478',
-  t: '1687859275746',
-  sign: 'e7309d302b1ed9a3350ed8c208509ebb',
-  api: 'mtop.venus.shopcategoryservice.getcategorydetail',
-  v: '1.1',
-  type: 'originaljson',
-  dataType: 'json',
-  ecode: '1',
-  SV: '5.0',
-  data: '{"deliveryType":0,"storeId":"239342276","itemId":"","categoryIds":"[\"t_b_tab\"]","type":3,"pn":1,"rn":20,"sortBy":"default","isSupportRank":false,"channel":22,"subChannel":"ELE_APP","bizChannel":"mobile.default.default","deviceId":"965C75F857BA4721977A8DA686DD57DD|1687847275310","lat":39.913234,"lng":116.477062}',
-  bx_et: 'c9rGBdcFaXOWjMjYO5i1fp7q4GWcaRdxZrz3YtAoWUuYaZZtQs2k8U5Zh6c1N18f.',
-}
-
 function getSign(inputData, time) {
   const token = l("_m_h5_tk").split("_")[0];
   return i(token + "&" + time + "&" + h + "&" + inputData);
