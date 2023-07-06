@@ -10,7 +10,7 @@
     "dev:serve": "nodemon index.js",
     "serve:app": "pm2 restart index.js",
     "stop:app": "pm2 stop index.js",
-    "serve:log": "pm2 log",
+    "serve:log": "pm2 list",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "_moduleAliases": {
