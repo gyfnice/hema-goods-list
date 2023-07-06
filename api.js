@@ -218,11 +218,13 @@ async function queryAddress({ keyword, lat, lng }) {
     latitude: res?.data?.[0]?.latitude || 40.0708,
     longitude: res?.data?.[0]?.longitude || 116.336116
   };
+  console.log('curInfo :>> ', curInfo);
   const resList = await Promise.allSettled(
     _.map(whiteList, (kwKey) => {
       return requestByLngLat({ curInfo, kw: kwKey });
     })
   );
+  console.log('resList :>> ', resList);
   const queue = [];
   _.map(resList, (list) => {
     if (!Array.isArray(list.value)) {
