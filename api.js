@@ -150,7 +150,7 @@ async function run(storeId) {
     }); */
   return _.reverse(list);
 }
-const whiteList = ['盒马', '正大优鲜', '永辉超市', '京客隆', '物美', '超市'];
+const whiteList = ['盒马'];
 const requestByLngLat = async ({ curInfo, kw }) => {
   const addressConfig = getSignConfig(
     {
@@ -188,6 +188,7 @@ const requestByLngLat = async ({ curInfo, kw }) => {
     "https://waimai-guide.ele.me/h5/mtop.relationrecommend.tinyapprecommend.recommend/1.0/5.0/",
     addressConfig
   );
+  console.log('res.data :>> ', res.data);
   if(kw === '超市') {
     return res?.data?.data?.result?.[0]?.cards || [];
   }
