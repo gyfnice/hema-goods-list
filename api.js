@@ -224,6 +224,7 @@ async function queryAddress({ keyword, lat, lng }) {
       return requestByLngLat({ curInfo, kw: kwKey });
     })
   );
+ console.log('resList :>> ', resList);
   const queue = [];
   _.map(resList, (list) => {
     if (!Array.isArray(list.value)) {
