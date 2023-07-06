@@ -20,10 +20,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.1.0",
     "module-alias": "^2.2.3",
     "nodemon": "^2.0.22",
-    "vite": "^4.3.9"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",
