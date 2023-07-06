@@ -8,7 +8,7 @@
     "dev:host": "vite  --host",
     "build": "vite build",
     "dev:serve": "nodemon index.js",
-    "serve:app": "pm2 start index.js",
+    "serve:app": "pm2 stop index.js && pm2 start index.js",
     "stop:app": "pm2 stop index.js",
     "serve:log": "pm2 log",
     "test": "echo \"Error: no test specified\" && exit 1"
