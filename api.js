@@ -2,8 +2,61 @@ const async = require("async");
 const axios = require("axios");
 const _ = require("lodash");
 
+const { getCookie } = require("./auth.js");
 const { getSign } = require("./sign.js");
 
+const getSignConfig = (mockData, extendParams) => {
+  const time = new Date().getTime();
+  const inputData = JSON.stringify(mockData);
+  const sign = getSign(inputData, time);
+  const axiosConfig = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+      Cookie: getCookie() // Add your cookie value here
+    },
+    params: {
+      jsv: "2.7.1",
+      appKey: "12574478",
+      t: time,
+      sign,
+      v: "1.1",
+      type: "originaljson",
+      dataType: "json",
+      SV: "5.0",
+      data: inputData,
+      ...extendParams
+    }
+  };
+  return axiosConfig;
+};
+async function getHotGoodsList({ storeId, pn = 1 }) {
+  const mockData = {
+    storeId,
+    moduleId: "-1",
+    moduleType: "-1",
+    pn,
+    rn: 20,
+    deliveryType: 0,
+    scentExtend: '{"SHOW_PRIVILEGES_AND_DISCOUNTS_ACTIVITY_CARD":true}',
+    channel: 22,
+    subChannel: "ELE_APP",
+    bizChannel: "mobile.default.default",
+    deviceId: "6AC390B27256480698D3540A7260BB2D|1688005162463",
+    lat: 40.067532,
+    lng: 116.333729
+  };
+  const axiosConfig = getSignConfig(mockData, {
+    api: "mtop.venus.flashsaleshoptabservice.queryshoptab",
+    ecode: "1"
+  });
+  const res = await axios.get(
+    "https://waimai-guide.ele.me/h5/mtop.venus.flashsaleshoptabservice.queryshoptab/1.1/5.0/",
+    axiosConfig
+  );
+  const list = res.data?.data?.data?.[0]?.shopTabDataDTO?.itemList || [];
+  return list;
+}
 async function getGoodsList({ storeId, pn = 1, categoryIds }) {
   const mockData = {
     deliveryType: 0,
@@ -22,30 +75,10 @@ async function getGoodsList({ storeId, pn = 1, categoryIds }) {
     lat: 39.913234,
     lng: 116.477062
   };
-  const time = new Date().getTime();
-  const inputData = JSON.stringify(mockData);
-  const sign = getSign(inputData, time);
-  // Axios request configuration
-  const axiosConfig = {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded",
-      Cookie: process.env.MY_COOKIE // Add your cookie value here
-    },
-    params: {
-      jsv: "2.7.1",
-      appKey: "12574478",
-      t: time,
-      sign,
-      api: "mtop.venus.shopcategoryservice.getcategorydetail",
-      v: "1.1",
-      type: "originaljson",
-      dataType: "json",
-      ecode: "1",
-      SV: "5.0",
-      data: inputData
-    }
-  };
+  const axiosConfig = getSignConfig(mockData, {
+    api: "mtop.venus.shopcategoryservice.getcategorydetail",
+    ecode: "1"
+  });
   // Make an HTTPS GET request using Axios
   const res = await axios.get(
     "https://waimai-guide.ele.me/h5/mtop.venus.shopcategoryservice.getcategorydetail/1.1/5.0/",
@@ -66,8 +99,16 @@ const scoreSort = (food) => {
   return bonusScore + Math.sqrt(food.monthSell || 0.5);
 }
 async function run(storeId) {
+  const hotTask = new Array(20);
   const bigTask = new Array(2);
-  const task = new Array(10);
+  const task = new Array(20);
+  const hotHomeTask = _.map(hotTask, (item, index) => {
+    const taskId = index + 1;
+    return getHotGoodsList({
+      storeId,
+      pn: taskId
+    });
+  });
   const bigCouponTask = _.map(bigTask, (item, index) => {
     const taskId = index + 1;
     return getGoodsList({
@@ -86,7 +127,7 @@ async function run(storeId) {
     });
   });
   const queue = [];
-  const res = await Promise.allSettled([...bigCouponTask, ...couponTask])
+  const res = await Promise.allSettled([...hotHomeTask, ...bigCouponTask, ...couponTask])
   _.map(res, (list) => {
     _.map(list.value, (food) => {
       food.priceSortWeight = scoreSort(food);
@@ -109,6 +150,95 @@ async function run(storeId) {
     }); */
   return _.reverse(list);
 }
+const whiteList = ['盒马', '正大优鲜', '永辉超市', '京客隆', '物美', '超市'];
+const requestByLngLat = async ({ curInfo, kw }) => {
+  const addressConfig = getSignConfig(
+    {
+      appId: "28820",
+      type: "originaljson",
+      params: JSON.stringify({
+        appId: "28820",
+        _input_charset: "UTF-8",
+        _output_charset: "UTF-8",
+        gatewayApiType: "mtop",
+        "x-ele-scene": "search_suggest",
+        mtop_api_version: "1.0",
+        isMtopMiniApp: true,
+        latitude: curInfo.latitude,
+        longitude: curInfo.longitude,
+        kw,
+        scene: "OTHER_H5_SUGGEST",
+        apiVersion: "2.2"
+      })
+    },
+    {
+      api: "mtop.relationrecommend.TinyAppRecommend.recommend",
+      timeout: 10000,
+      needLogin: true,
+      mainDomain: "ele.me",
+      subDomain: "waimai-guide",
+      H5Request: true,
+      ttid: "h5@safari_ios_604.1"
+    }
+  );
+  const res = await axios.get(
+    "https://waimai-guide.ele.me/h5/mtop.relationrecommend.tinyapprecommend.recommend/1.0/5.0/",
+    addressConfig
+  );
+  if(kw === '超市') {
+    return res?.data?.data?.result?.[0]?.cards || [];
+  }
+  return _.find(res?.data?.data?.result?.[0]?.cards, function (o) {
+    return o?.content?.scheme && o?.content?.text?.indexOf?.('代购') === -1;
+  }).content || {};
+}
+async function queryAddress({ keyword, lat, lng }) {
+  const mockData = {
+    keyword,
+    offset: 0,
+    limit: 40,
+    latitude: lat,
+    longitude: lng
+  };
+  // Axios request configuration
+  const axiosConfig = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Cookie: getCookie() // Add your cookie value here
+    },
+    params: mockData
+  };
+  // Make an HTTPS GET request using Axios
+  const res = await axios.get(
+    "https://h5.ele.me/restapi/bgs/poi/search_poi_nearby",
+    axiosConfig
+  );
+  const curInfo = {
+    latitude: res?.data?.[0]?.latitude || 40.0708,
+    longitude: res?.data?.[0]?.longitude || 116.336116
+  };
+  const resList = await Promise.allSettled(
+    _.map(whiteList, (kwKey) => {
+      return requestByLngLat({ curInfo, kw: kwKey });
+    })
+  );
+  const queue = [];
+  _.map(resList, (list) => {
+    if (!Array.isArray(list.value)) {
+      queue.push(list.value);
+      return;
+    }
+    list.value
+      .filter((item) => item?.content?.scheme)
+      .map((item) => {
+        queue.push(item.content);
+      });
+  });
+  return _.uniqBy(queue, 'text').filter(item => item?.text);
+}
 module.exports = {
-  run
+  run,
+  getHotGoodsList,
+  queryAddress
 };

@@ -1,3 +1,4 @@
+const { getCookie } = require("./auth.js");
 function i(a) {
   function b(a, b) {
     return (a << b) | (a >>> (32 - b));
@@ -213,7 +214,7 @@ h = 12574478;
 
 function l(a) {
   var b = new RegExp("(?:^|;\\s*)" + a + "\\=([^;]+)(?:;\\s*|$)").exec(
-    process.env.MY_COOKIE
+    getCookie()
   );
   return b ? b[1] : void 0;
 }

@@ -18,3 +18,12 @@
   --color-accent-dark: #2B921A;
   --color-accent-light: #63CC4F;
 }
+:root body .van-action-sheet {
+  max-height: 100%;
+}
+:root body .van-field__label {
+  width: 2em;
+}
+:root body .van-row {
+  align-items: center;
+}

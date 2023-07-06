@@ -31,7 +31,7 @@ const runServer = () => {
     );
     await next();
   });
-  const PORT = 8081;
+  const PORT = 80;
   server.listen(PORT, () =>
     console.log(
       `Server Listening on PORT ${PORT} 🚀 ..`

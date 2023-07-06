@@ -5,3 +5,9 @@ export const getGoodsListByServer = (params) => {
     params
   });
 }
+
+export const queryStoreListByAddress = (params) => {
+  return axios.get(`/api/hema/queryAddress`, {
+    params
+  });
+}
