@@ -157,18 +157,21 @@ const requestByLngLat = async ({ curInfo, kw }) => {
       appId: "28820",
       type: "originaljson",
       params: JSON.stringify({
-        appId: "28820",
-        _input_charset: "UTF-8",
-        _output_charset: "UTF-8",
-        gatewayApiType: "mtop",
+        "appId": "28820",
+        "_input_charset": "UTF-8",
+        "_output_charset": "UTF-8",
+        "gatewayApiType": "mtop",
         "x-ele-scene": "search_suggest",
-        mtop_api_version: "1.0",
-        isMtopMiniApp: true,
-        latitude: curInfo.latitude,
-        longitude: curInfo.longitude,
-        kw,
-        scene: "OTHER_H5_SUGGEST",
-        apiVersion: "2.2"
+        "mtop_api_version": "1.0",
+        "isMtopMiniApp": true,
+        "userId": "1497914586",
+        "latitude": curInfo.latitude,
+        "longitude": curInfo.longitude,
+        "kw": kw,
+        "scene": "OTHER_H5_SUGGEST",
+        "apiVersion": "2.2",
+        "recKw": kw,
+        "needRecWords": true
       })
     },
     {
@@ -185,7 +188,6 @@ const requestByLngLat = async ({ curInfo, kw }) => {
     "https://waimai-guide.ele.me/h5/mtop.relationrecommend.tinyapprecommend.recommend/1.0/5.0/",
     addressConfig
   );
-  console.log("object :>> ", res?.data);
   if(kw === '超市') {
     return res?.data?.data?.result?.[0]?.cards || [];
   }
