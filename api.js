@@ -181,12 +181,11 @@ const requestByLngLat = async ({ curInfo, kw }) => {
       ttid: "h5@safari_ios_604.1"
     }
   );
-  console.log('addressConfig :>> ', addressConfig);
   const res = await axios.get(
     "https://waimai-guide.ele.me/h5/mtop.relationrecommend.tinyapprecommend.recommend/1.0/5.0/",
     addressConfig
   );
-  console.log("object :>> ", res?.data?.data);
+  console.log("object :>> ", res?.data);
   if(kw === '超市') {
     return res?.data?.data?.result?.[0]?.cards || [];
   }
@@ -226,7 +225,6 @@ async function queryAddress({ keyword, lat, lng }) {
       return requestByLngLat({ curInfo, kw: kwKey });
     })
   );
- console.log('resList :>> ', resList);
   const queue = [];
   _.map(resList, (list) => {
     if (!Array.isArray(list.value)) {
