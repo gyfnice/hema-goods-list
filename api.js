@@ -155,6 +155,7 @@ const requestByLngLat = async ({ curInfo, kw }) => {
   const addressConfig = getSignConfig(
     {
       appId: "28820",
+      instance: "INNER",
       type: "originaljson",
       params: JSON.stringify({
         "appId": "28820",
@@ -168,7 +169,7 @@ const requestByLngLat = async ({ curInfo, kw }) => {
         "latitude": curInfo.latitude,
         "longitude": curInfo.longitude,
         "kw": kw,
-        "scene": "OTHER_H5_SUGGEST",
+        "scene": "ALIPAY_MINIAPP_SUGGEST",
         "apiVersion": "2.2",
         "recKw": kw,
         "needRecWords": true
