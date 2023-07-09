@@ -54,6 +54,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
+import { showToast } from 'vant';
 
 import { getGoodsListByServer } from '@/api'
 import { Store, groupCopywriting } from '@/utils/index.js';
@@ -162,6 +163,10 @@ export default {
           storeId
         });
         this.loading = false;
+        if(res.data.state === 401) {
+          showToast(res?.data?.message);
+          return;
+        }
         storeMap[storeId] = _.uniqBy(res.data.list.map(item => {
           item.goodsCount = 0;
           return item;

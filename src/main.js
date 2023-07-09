@@ -21,6 +21,7 @@ import {
   NavBar,
   Cell,
   Dialog,
+  Sticky,
   Swipe,
   Form,
   CellGroup,
@@ -45,6 +46,7 @@ app
   .use(store)
   .use(router)
   .use(Icon)
+  .use(Sticky)
   .use(Button)
   .use(Col)
   .use(Toast)

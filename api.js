@@ -82,6 +82,9 @@ async function getHotGoodsList({ storeId, pn = 1 }) {
     "https://waimai-guide.ele.me/h5/mtop.venus.flashsaleshoptabservice.queryshoptab/1.1/5.0/",
     axiosConfig
   );
+  if(res?.data?.ret?.[0] === 'FAIL_SYS_TOKEN_EXOIRED::令牌过期') {
+    return 401
+  }
   const list = res.data?.data?.data?.[0]?.shopTabDataDTO?.itemList || [];
   return list;
 }
@@ -113,9 +116,9 @@ async function getGoodsList({ storeId, pn = 1, categoryIds }) {
     axiosConfig
   );
   if(!res.data.data.data) {
-    console.log('res.data :>> ', res.data);
+    // console.log('res.data :>> ', res.data);
   }
-  const list = res.data.data.data[0].foods;
+  const list = res?.data?.data?.data?.[0]?.foods || [];
   return [...list];
 }
 const scoreSort = (food) => {
@@ -127,6 +130,10 @@ const scoreSort = (food) => {
   return bonusScore + Math.sqrt(food.monthSell || 0.5);
 }
 async function run(storeId) {
+  const testAuthRes = await getHotGoodsList({ storeId });
+  if(testAuthRes === 401) {
+    return 401
+  }
   const hotTask = new Array(20);
   const bigTask = new Array(2);
   const task = new Array(20);

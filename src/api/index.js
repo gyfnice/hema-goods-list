@@ -29,3 +29,6 @@ export const sendAuthCookie = (params) => {
     params
   });
 };
+export const queryAuthCookie = () => {
+  return axios.get(`/api/hema/queryToken`);
+};

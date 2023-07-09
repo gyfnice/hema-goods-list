@@ -5,7 +5,7 @@ const {
   queryAllTaskStore
 } = require("@/controller/index.js");
 const { run, queryAddress, requestByLngLat } = require("@/api.js");
-const { setCookieFile } = require("@/auth.js");
+const { setCookieFile, getCookie } = require("@/auth.js");
 
 // 获取商品列表接口
 router.get("/api/hema/goodsList", async (context) => {
@@ -13,6 +13,13 @@ router.get("/api/hema/goodsList", async (context) => {
   const queryParams = context.request.query;
   const storeId = queryParams.storeId;
   const list = await run(storeId);
+  if(list === 401) {
+    context.response.body = {
+      state: 401,
+      message: 'cookie过期，请稍后重试或联系管理员'
+    };
+    return;
+  }
   context.response.body = {
     state: 1,
     list
@@ -46,6 +53,14 @@ router.get("/api/hema/setAuth", async (context) => {
   setCookieFile(queryParams.authToken);
   context.response.body = {
     state: 'success',
+  };
+});
+// 查看cookie
+router.get("/api/hema/queryToken", async (context) => {
+  // context 上下文
+  context.response.body = {
+    state: "success",
+    content: getCookie()
   };
 });
 

@@ -16,6 +16,22 @@
           提交
         </van-button>
       </div>
+      <div style="margin: 16px;">
+        <van-button :loading="cookieLoading" round block @click="showCookie" >
+          查看当前cookie
+        </van-button>
+      </div>
+      <van-popup
+        closeable
+        v-model:show="showRight"
+        position="right"
+        :style="{ width: '95%', height: '100%', padding: '20px' }"
+      >
+        <div class="look-wrapper-content">
+          <h2>cookie</h2>
+          {{ lookToken }}
+        </div>
+      </van-popup>
     </van-form>
 </template>
 
@@ -24,14 +40,29 @@
 
   import { showToast } from 'vant';
 
-  import { sendAuthCookie } from '@/api';
+  import { sendAuthCookie, queryAuthCookie } from '@/api';
+  import { validateCookieString } from '@/utils';
 
   const onClickLeft = () => {
     history.back();
   }
   const token = ref('');
+  const lookToken = ref('hello world');
   const loading = ref(false);
+  const cookieLoading = ref(false);
+  const showRight = ref(false);
+  const showCookie = async () => {
+    showRight.value = true;
+    cookieLoading.value = true;
+    const res = await queryAuthCookie()
+    lookToken.value = res?.data?.content || '未获取'
+    cookieLoading.value = false;
+  }
   const onSubmit = async (values) => {
+    if(!validateCookieString(values.token)) {
+      showToast('cookie格式不正确，请重新输入');
+      return;
+    }
     loading.value = true;
     await sendAuthCookie({
       authToken: values.token
@@ -43,5 +74,7 @@
 </script>
   
 <style>
-  
+  .look-wrapper-content {
+    word-break: break-all;
+  }
 </style>

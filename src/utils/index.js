@@ -25,3 +25,49 @@ export const groupCopywriting = (copywritingArr) => {
 
   return groupedObj;
 }
+// Function to validate the cookie name
+function isValidCookieName(name) {
+  // Use a regular expression to check if the name is valid
+  const nameRegex = /^[a-zA-Z0-9!#$%&'*+\-.^_`|~]+$/;
+
+  return nameRegex.test(name);
+}
+
+// Function to validate the cookie value
+function isValidCookieValue(value) {
+  // Use a regular expression to check if the value is valid
+  const valueRegex = /^[a-zA-Z0-9!#$%&'()*+\-.^_`|~]+$/;
+
+  return valueRegex.test(value);
+}
+export function validateCookieString(cookieString) {
+  // Split the cookie string into individual cookies
+  const cookies = cookieString.split(";");
+
+  // Iterate through each cookie
+  for (let i = 0; i < cookies.length; i++) {
+    // Trim any leading or trailing whitespace
+    const cookie = cookies[i].trim();
+
+    // Split the cookie into name and value
+    const [name, value] = cookie.split("=");
+
+    // Check if the name or value is empty
+    if (!name || !value) {
+      return false;
+    }
+
+    // Validate the cookie name
+    if (!isValidCookieName(name)) {
+      return false;
+    }
+
+    // Validate the cookie value
+    if (!isValidCookieValue(value)) {
+      return false;
+    }
+  }
+
+  // All cookies are valid
+  return true;
+}

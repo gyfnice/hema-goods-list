@@ -2,7 +2,7 @@
     <van-nav-bar @click-right="onClickRight" right-text="历史门店" @click-left="onClickLeft" title="选择门店" left-text="返回" left-arrow />
     <van-space direction="vertical" fill>
       <van-row>
-        <van-col span="10">
+        <van-col span="12">
           <van-field
             v-model="currentCity"
             is-link
@@ -12,7 +12,7 @@
             @click="showPicker = true"
           />
         </van-col>
-        <van-col span="14">
+        <van-col span="12">
           <van-search
             :disabled="!currentCity"
             v-model="keyword"
