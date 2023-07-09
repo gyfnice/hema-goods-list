@@ -132,16 +132,24 @@
   watch(
       () => keyword.value,
       _.debounce(async (value) => {
+          if(!value || !value.trim()) {
+            return;
+          }
+          const kword = value.trim();
           const info = cityMapInfo[currentCity.value];
-          store.commit('changeAddress', value)
+          store.commit('changeAddress', kword)
           loading.value = true;
-          const res = await queryStoreListByAddress({
-            keyword: value,
-            lat: info.lat,
-            lng: info.log
-          });
-          loading.value = false;
-          list.value = res.data.list;
+          try {
+            const res = await queryStoreListByAddress({
+              keyword: kword,
+              lat: info.lat,
+              lng: info.log
+            });
+            loading.value = false;
+            list.value = res.data.list;
+          } catch(err) {
+            loading.value = false;
+          }
       }, 500)
   );
   const historyGroupStoreList = computed(() => {
