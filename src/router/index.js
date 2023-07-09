@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import List from "@/pages/List.vue";
 import Address from "@/pages/Address.vue";
+import AuthToken from "@/pages/AuthToken.vue";
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: "/address",
     name: "address",
     component: Address
+  },
+  {
+    path: "/auth",
+    name: "authToken",
+    component: AuthToken
   }
 ];
 

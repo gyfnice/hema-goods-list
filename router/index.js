@@ -1,6 +1,9 @@
 const koa_router = require('koa-router');
 const router = koa_router();
-const { queryChannelStore } = require("@/controller/index.js");
+const {
+  queryChannelStore,
+  queryAllTaskStore
+} = require("@/controller/index.js");
 const { run, queryAddress, requestByLngLat } = require("@/api.js");
 const { setCookie } = require("@/auth.js");
 
@@ -19,7 +22,8 @@ router.get("/api/hema/goodsList", async (context) => {
 router.get("/api/hema/queryAddress", async (context) => {
   // context 上下文
   const queryParams = context.request.query;
-  const list = await queryAddress(queryParams);
+  //const list = await queryAddress(queryParams);
+  const list = await queryAllTaskStore(queryParams);
   context.response.body = {
     state: 1,
     list

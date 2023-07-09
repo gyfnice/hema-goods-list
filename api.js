@@ -30,6 +30,34 @@ const getSignConfig = (mockData, extendParams) => {
   };
   return axiosConfig;
 };
+async function fetchLatLngByKeword({ keyword, lat, lng }) {
+  const mockData = {
+    keyword,
+    offset: 0,
+    limit: 40,
+    latitude: lat,
+    longitude: lng
+  };
+  // Axios request configuration
+  const axiosConfig = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Cookie: getCookie() // Add your cookie value here
+    },
+    params: mockData
+  };
+  // Make an HTTPS GET request using Axios
+  const res = await axios.get(
+    "https://h5.ele.me/restapi/bgs/poi/search_poi_nearby",
+    axiosConfig
+  );
+  const curInfo = {
+    latitude: res?.data?.[0]?.latitude || 40.0708,
+    longitude: res?.data?.[0]?.longitude || 116.336116
+  };
+  return curInfo;
+}
 async function getHotGoodsList({ storeId, pn = 1 }) {
   const mockData = {
     storeId,
@@ -197,33 +225,8 @@ const requestByLngLat = async ({ curInfo, kw }) => {
     return o?.content?.scheme && o?.content?.text?.indexOf?.('代购') === -1;
   })?.content || {};
 }
-async function queryAddress({ keyword, lat, lng }) {
-  const mockData = {
-    keyword,
-    offset: 0,
-    limit: 40,
-    latitude: lat,
-    longitude: lng
-  };
-  // Axios request configuration
-  const axiosConfig = {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Cookie: getCookie() // Add your cookie value here
-    },
-    params: mockData
-  };
-  // Make an HTTPS GET request using Axios
-  const res = await axios.get(
-    "https://h5.ele.me/restapi/bgs/poi/search_poi_nearby",
-    axiosConfig
-  );
-  const curInfo = {
-    latitude: res?.data?.[0]?.latitude || 40.0708,
-    longitude: res?.data?.[0]?.longitude || 116.336116
-  };
-  console.log('curInfo :>> ', curInfo);
+async function queryAddress(params) {
+  const curInfo = await fetchLatLngByKeword(params);
   const resList = await Promise.allSettled(
     _.map(whiteList, (kwKey) => {
       return requestByLngLat({ curInfo, kw: kwKey });
@@ -246,6 +249,7 @@ async function queryAddress({ keyword, lat, lng }) {
 module.exports = {
   run,
   getSignConfig,
+  fetchLatLngByKeword,
   requestByLngLat,
   getHotGoodsList,
   queryAddress

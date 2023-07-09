@@ -21,17 +21,19 @@
           />
         </van-col>
       </van-row>
-      <van-list :loading="loading">
-        <van-cell :key="item.text" v-for="item in list" @click="selectStoreId(item)" is-link>
-          <!-- 使用 title 插槽来自定义标题 -->
-          <template #title>
-            <span class="custom-title">{{ item.text }}</span>
-            <van-space fill>
-              <van-tag type="primary" v-for="(tag, index) in item.descs" :key="tag.text">{{ tag.text }}</van-tag>
-            </van-space>
-          </template>
-        </van-cell>
-      </van-list>
+      <div class="store-list-wrapper">
+        <van-list :loading="loading">
+          <van-cell :key="item.text" v-for="item in list" @click="selectStoreId(item)" is-link>
+            <!-- 使用 title 插槽来自定义标题 -->
+            <template #title>
+              <span class="custom-title">{{ item.text }}</span>
+              <van-space fill>
+                <van-tag type="primary" v-for="(tag, index) in item.descs" :key="tag.text">{{ tag.text }}</van-tag>
+              </van-space>
+            </template>
+          </van-cell>
+        </van-list>
+      </div>
     </van-space>
     <van-popup v-model:show="showPicker" round position="bottom">
       <van-picker
@@ -157,6 +159,12 @@
   }
 </script>
   
-<style>
-  
+<style lang="less">
+  .store-list-wrapper {
+    .van-space--fill {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+    }
+  }
 </style>

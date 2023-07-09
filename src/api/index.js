@@ -11,3 +11,9 @@ export const queryStoreListByAddress = (params) => {
     params
   });
 }
+
+export const sendAuthCookie = (params) => {
+  return axios.get(`/api/hema/setAuth`, {
+    params
+  });
+};

@@ -22,6 +22,8 @@ import {
   Cell,
   Dialog,
   Swipe,
+  Form,
+  CellGroup,
   SwipeItem,
   TreeSelect,
   SubmitBar
@@ -49,6 +51,8 @@ app
   .use(Dialog)
   .use(Swipe)
   .use(SwipeItem)
+  .use(Form)
+  .use(CellGroup)
   .use(Image)
   .use(Tag)
   .use(Space)
