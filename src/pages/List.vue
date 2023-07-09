@@ -14,10 +14,14 @@
       :items="items"
     >
       <template #content>
-        <van-space fill>
-          <van-tag @click="tagClick(item)" round type="primary" :key="item" v-for="item in hotTags">{{ item }}</van-tag>
-        </van-space>
-        <van-search v-model="foodsKeyword" placeholder="请输入搜索关键词" />
+        <van-sticky :offset-top="40">
+          <div class="nav-search-wrapper">
+            <van-space fill>
+              <van-tag @click="tagClick(item)" plain type="primary" :key="item" v-for="item in hotTags">{{ item }}</van-tag>
+            </van-space>
+            <van-search v-model="foodsKeyword" placeholder="请输入搜索关键词" />
+          </div>
+        </van-sticky>
         <List :loading="loading" :list="filterCouponList" />
       </template>
     </van-tree-select>
@@ -63,7 +67,7 @@ let storeMap = {};
 export default {
   data() {
     return {
-      hotTags: ['牛奶', '酒', '肉', '鱼', '虾', '粉', '蛋', '鸡'],
+      hotTags: ['奶', '酒', '猪', '鱼', '虾', '蛋', '鸡', '乳'],
       list: [],
       collectList: Store('historyList') || [],
       foodsKeyword: '',
@@ -91,8 +95,19 @@ export default {
     },
     // 叠加优惠分类
     items() {
-      const group = _.groupBy(this.list, (item) => {
-        return item?.couponTag?.actDesc || '无叠加优惠'
+      const group = _.groupBy(this.list.map(item => {
+        if(item?.dishActivity?.[0]?.secondText && Number(item.currentPrice) <= 1) {
+          item.specCouponText = item?.dishActivity?.[0]?.secondText
+        }
+        return item;
+      }), (item) => {
+        if(item?.couponTag?.actDesc && !item.specCouponText) {
+          return `${item?.couponTag?.actDesc}【${item?.couponTag?.categoryName}】`
+        }
+        if(item?.specCouponText) {
+          return `优惠${item.specCouponText}`;
+        }
+        return '无优惠'
       });
       const list = _.keys(group).map(couponKey => {
         return {
@@ -100,7 +115,7 @@ export default {
           badge: group[couponKey].length
         }
       });
-      return [{text: '所有特价'}].concat(list);
+      return [{text: 'all'}].concat(list);
     },
     goodsList() {
       return _.filter(this.list, (item => {
@@ -110,13 +125,21 @@ export default {
     filterCouponList() {
       return _.filter(this.list, (item => {
         const curTab = this.items[this.activeIndex].text
-        if(curTab === '所有特价' && !this.foodsKeyword) {
+        const specCouponText = item?.dishActivity?.[0]?.secondText;
+        const isSpecCoupon = (specCouponText && Number(item.currentPrice) <= 1)
+        if(curTab === 'all' && !this.foodsKeyword && !isSpecCoupon) {
           return true;
         }
-        if(curTab === '所有特价' && this.foodsKeyword) {
+        if(curTab === 'all' && this.foodsKeyword && !isSpecCoupon) {
           return item.name.indexOf(this.foodsKeyword) > -1;
         }
-        return (item?.couponTag?.actDesc || '无叠加优惠') === curTab
+        if(item?.couponTag?.actDesc && !isSpecCoupon) {
+          return `${item?.couponTag?.actDesc}【${item?.couponTag?.categoryName}】` === curTab
+        }
+        if(isSpecCoupon) {
+          return `优惠${specCouponText}` === curTab
+        }
+        return '无优惠' === curTab;
       }))
     }
   },
@@ -186,5 +209,10 @@ export default {
     font-size: 20px;
     line-height: 150px;
     text-align: center;
+  }
+  .nav-search-wrapper {
+    padding-top: 10px;
+    padding-left: 10px;
+    background:#fff;
   }
 </style>

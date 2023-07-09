@@ -13,10 +13,10 @@ router.get("/api/hema/goodsList", async (context) => {
   const queryParams = context.request.query;
   const storeId = queryParams.storeId;
   const list = await run(storeId);
-  if(list === 401) {
+  if(list?.code === 401) {
     context.response.body = {
       state: 401,
-      message: 'cookie过期，请稍后重试或联系管理员'
+      message: list?.message
     };
     return;
   }
