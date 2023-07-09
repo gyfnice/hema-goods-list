@@ -10,6 +10,8 @@ export const store = createStore({
   state() {
     return {
       photos: [],
+      searchAddress: "",
+      currentCity: "北京",
       currentGoodsItem: {},
       showPhoto: false,
       currentStoreItem: Store("currentStoreItem") || {
@@ -21,6 +23,12 @@ export const store = createStore({
     };
   },
   mutations: {
+    selectCity(state, cityName) {
+      state.currentCity = cityName;
+    },
+    changeAddress(state, val) {
+      state.searchAddress = val;
+    },
     hidePhotoModal(state) {
       state.showPhoto = false;
     },
@@ -32,7 +40,7 @@ export const store = createStore({
     select_store_id(state, item) {
       state.currentStoreItem = item;
       Store("currentStoreItem", item);
-    },
+    }
   },
   actions: {
     increment(context) {

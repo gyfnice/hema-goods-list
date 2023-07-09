@@ -5,7 +5,7 @@ const {
   queryAllTaskStore
 } = require("@/controller/index.js");
 const { run, queryAddress, requestByLngLat } = require("@/api.js");
-const { setCookie } = require("@/auth.js");
+const { setCookieFile } = require("@/auth.js");
 
 // 获取商品列表接口
 router.get("/api/hema/goodsList", async (context) => {
@@ -43,7 +43,7 @@ router.get("/api/hema/queryStoreText", async (context) => {
 router.get("/api/hema/setAuth", async (context) => {
   // context 上下文
   const queryParams = context.request.query;
-  setCookie(queryParams.authToken);
+  setCookieFile(queryParams.authToken);
   context.response.body = {
     state: 'success',
   };

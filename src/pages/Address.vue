@@ -4,7 +4,7 @@
       <van-row>
         <van-col span="10">
           <van-field
-            v-model="fieldValue"
+            v-model="currentCity"
             is-link
             readonly
             label="城市"
@@ -14,7 +14,7 @@
         </van-col>
         <van-col span="14">
           <van-search
-            :disabled="!fieldValue"
+            :disabled="!currentCity"
             v-model="keyword"
             placeholder="小区、学校"
             @search="onSearch"
@@ -26,7 +26,15 @@
           <van-cell :key="item?.text" v-for="item in list" @click="selectStoreId(item)" is-link>
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
-              <span class="custom-title">{{ item?.text }}</span>
+              <span class="custom-title">
+                {{ item?.text }}
+                <span>|</span>
+                <span>
+                  <van-tag color="#ffe1e1" text-color="#ad0000">
+                    {{ item?.piecewiseAgentFee?.description || `配送费: ${item.floatDeliveryFee}元` }}
+                  </van-tag>
+                </span>
+              </span>
               <van-space fill>
                 <van-tag type="primary" v-for="(tag, index) in item.descs" :key="tag?.text">{{ tag?.text }}</van-tag>
               </van-space>
@@ -72,7 +80,7 @@
 </template>
   
 <script setup>
-  import { ref, watch, computed } from 'vue'
+  import { ref, watch, computed, onMounted } from 'vue'
 
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
@@ -86,7 +94,6 @@
   const showPicker = ref(false);
   const loading = ref(false);
   const historyShow = ref(false);
-  const fieldValue = ref('北京');
   const keyword = ref('');
   const list = ref([])
   const historyList = ref(Store('historyList') || [])
@@ -112,15 +119,21 @@
     { text: '南京', value: '13' },
     { text: '苏州', value: '14' },
   ];
+  const currentCity = computed(() => store.state.currentCity);
+  const searchAddress = computed(() => store.state.searchAddress);
   const onConfirm = ({ selectedOptions }) => {
     showPicker.value = false;
     const cityName = selectedOptions[0].text
-    fieldValue.value = cityName;
+    store.commit('selectCity', cityName)
   };
+  onMounted(() => {
+    keyword.value = searchAddress.value;
+  });
   watch(
       () => keyword.value,
       _.debounce(async (value) => {
-          const info = cityMapInfo[fieldValue.value];
+          const info = cityMapInfo[currentCity.value];
+          store.commit('changeAddress', value)
           loading.value = true;
           const res = await queryStoreListByAddress({
             keyword: value,

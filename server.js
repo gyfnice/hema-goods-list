@@ -4,6 +4,7 @@ const Koa = require("koa");
 const cors = require("@koa/cors");
 const serve = require("koa-static");
 const router = require("./router"); // 服务端路由，为开发接口准备
+const { getCookieFile, setCookie } = require("./auth.js");
 // Expected here; serve static files from public dir
 const staticDirPath = path.join(__dirname, "dist");
 
@@ -12,25 +13,23 @@ const server = new Koa();
 
 const runServer = () => {
   // handle fallback for HTML5 history API
-  server.use(router.routes());
   server.use(historyApiFallback());
   // Mount the middleware
   server.use(serve(staticDirPath));
-
   server.use(
     cors({
       origin: "*"
     })
-  );
-  // Run Koa.js server
-
-  // log request URL:
-  server.use(async (ctx, next) => {
-    console.log(
-      `Process ${ctx.request.method} ${ctx.request.url}...`
     );
+  // Run Koa.js server
+  server.use(async (ctx, next) => {
+    const currentCookie = await getCookieFile();
+    setCookie(currentCookie);
+    console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     await next();
   });
+  server.use(router.routes());
+  // log request URL:
   const PORT = 80;
   server.listen(PORT, () =>
     console.log(
