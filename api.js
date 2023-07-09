@@ -245,6 +245,7 @@ async function queryAddress({ keyword, lat, lng }) {
 }
 module.exports = {
   run,
+  getSignConfig,
   requestByLngLat,
   getHotGoodsList,
   queryAddress
