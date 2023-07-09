@@ -23,12 +23,12 @@
       </van-row>
       <div class="store-list-wrapper">
         <van-list :loading="loading">
-          <van-cell :key="item.text" v-for="item in list" @click="selectStoreId(item)" is-link>
+          <van-cell :key="item?.text" v-for="item in list" @click="selectStoreId(item)" is-link>
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
-              <span class="custom-title">{{ item.text }}</span>
+              <span class="custom-title">{{ item?.text }}</span>
               <van-space fill>
-                <van-tag type="primary" v-for="(tag, index) in item.descs" :key="tag.text">{{ tag.text }}</van-tag>
+                <van-tag type="primary" v-for="(tag, index) in item.descs" :key="tag?.text">{{ tag?.text }}</van-tag>
               </van-space>
             </template>
           </van-cell>
@@ -98,8 +98,19 @@
     { text: '杭州', value: '2' },
     { text: '深圳', value: '3' },
     { text: '广州', value: '4' },
+    { text: '东莞', value: '24' },
     { text: '贵阳', value: '5' },
-    { text: '南昌', value: '6' },
+    { text: '哈尔滨', value: '6' },
+    { text: '重庆', value: '7' },
+    { text: '南昌', value: '8' },
+    { text: '新余', value: '110' },
+    { text: '丰城', value: '112' },
+    { text: '大连', value: '9' },
+    { text: '长沙', value: '10' },
+    { text: '株洲', value: '11' },
+    { text: '大理', value: '12' },
+    { text: '南京', value: '13' },
+    { text: '苏州', value: '14' },
   ];
   const onConfirm = ({ selectedOptions }) => {
     showPicker.value = false;
