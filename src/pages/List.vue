@@ -3,6 +3,7 @@
     <van-nav-bar :title="currentStoreItem?.text">
       <template #right>
         <van-space fill>
+          <van-icon @click="shareStore" name="share-o" />
           <van-icon v-if="collectStoreList.length > 0" @click="switchStore" name="exchange" />
           <van-icon @click="selectCity" name="search" size="18" />
         </van-space>
@@ -65,6 +66,10 @@ import { Store, groupCopywriting } from '@/utils/index.js';
 import List from '@/components/List.vue';
 let storeMap = {};
 export default {
+  created() {
+    console.log('this.$store :>> ', this.$store);
+    this.$store.dispatch('fetchQueryParams', this.$route.query);
+  },
   data() {
     return {
       hotTags: ['奶', '酒', '猪', '鱼', '虾', '蛋', '鸡', '乳'],
@@ -153,6 +158,15 @@ export default {
   },
   methods: {
     ...mapMutations(['hidePhotoModal', 'select_store_id']),
+    shareStore() {
+      var oInput = document.createElement("input");
+      oInput.value = `https://${window.location.hostname}?storeId=${this.currentStoreId}&storeName=${this.currentStoreItem?.text}`
+      document.body.appendChild(oInput);
+      oInput.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      document.body.removeChild(oInput);
+      showToast('分享链接已复制到剪贴板');
+    },
     onSelect(item) {
       this.select_store_id(item);
       this.fetchList();

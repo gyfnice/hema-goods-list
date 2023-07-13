@@ -10,6 +10,7 @@ export const store = createStore({
   state() {
     return {
       photos: [],
+      queryParams: {},
       searchAddress: "",
       currentCity: "北京",
       currentGoodsItem: {},
@@ -40,11 +41,14 @@ export const store = createStore({
     select_store_id(state, item) {
       state.currentStoreItem = item;
       Store("currentStoreItem", item);
+    },
+    SET_QUERY_PARAMS(state, query) {
+      state.queryParams = query || {};
     }
   },
   actions: {
-    increment(context) {
-      context.commit("increment");
+    fetchQueryParams({ commit }, queryParams) {
+      commit("SET_QUERY_PARAMS", queryParams);
     },
     decrement(context) {
       context.commit("decrement");
@@ -52,7 +56,12 @@ export const store = createStore({
   },
   getters: {
     currentStoreId(state) {
-      const storeId = getStoreId(state.currentStoreItem.scheme);
+      const storeId = state?.queryParams?.storeId || getStoreId(
+        state.currentStoreItem.scheme
+      );
+      if(state?.queryParams?.storeId) {
+        state.currentStoreItem.text = state?.queryParams?.storeName;
+      }
       return storeId;
     }
   }

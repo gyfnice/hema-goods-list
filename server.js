@@ -4,7 +4,8 @@ const Koa = require("koa");
 const cors = require("@koa/cors");
 const serve = require("koa-static");
 const router = require("./router"); // 服务端路由，为开发接口准备
-const { getCookieFile, setCookie } = require("./auth.js");
+const { setCookie } = require("./auth.js");
+const { getCookie } = require("@/connection/index.js");
 // Expected here; serve static files from public dir
 const staticDirPath = path.join(__dirname, "dist");
 
@@ -23,7 +24,7 @@ const runServer = () => {
     );
   // Run Koa.js server
   server.use(async (ctx, next) => {
-    const currentCookie = await getCookieFile();
+    const currentCookie = await getCookie();
     setCookie(currentCookie);
     console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     await next();
