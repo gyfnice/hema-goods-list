@@ -27,6 +27,7 @@ import {
   CellGroup,
   SwipeItem,
   TreeSelect,
+  Checkbox,
   SubmitBar
 } from "vant";
 import _ from 'lodash';
@@ -54,6 +55,7 @@ app
   .use(Swipe)
   .use(SwipeItem)
   .use(Form)
+  .use(Checkbox)
   .use(CellGroup)
   .use(Image)
   .use(Tag)

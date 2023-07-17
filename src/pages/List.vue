@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-wrapper">
     <van-nav-bar :title="currentStoreItem?.text">
       <template #right>
         <van-space fill>
@@ -31,6 +31,9 @@
         清空
       </van-button>
     </van-submit-bar>
+    <van-action-sheet v-model:show="show" title="购物车">
+      <List :isGoodsCart="true" :loading="loading" :list="goodsList" />
+    </van-action-sheet>
   </div>
   <van-dialog :show-confirm-button="false" :show="showPhoto" :title="currentGoodsItem.name" :close-on-click-overlay="true">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
@@ -44,9 +47,6 @@
     </van-swipe>
     <van-button @click="hidePhotoModal" type="primary" block>关闭</van-button>
   </van-dialog>
-  <van-action-sheet v-model:show="show" title="购物车">
-    <List :loading="loading" :list="goodsList" />
-  </van-action-sheet>
   <van-action-sheet
     v-model:show="switchVisible"
     :actions="collectStoreList"
@@ -67,7 +67,6 @@ import List from '@/components/List.vue';
 let storeMap = {};
 export default {
   created() {
-    console.log('this.$store :>> ', this.$store);
     this.$store.dispatch('fetchQueryParams', this.$route.query);
   },
   data() {
@@ -95,7 +94,7 @@ export default {
     },
     totalPrice() {
       return _.reduce(this.list, (pre, item) => {
-        return pre + item.goodsCount * Number(item.currentPrice)
+        return pre + item.goodsCount * Number(item.currentPrice) * (item.goodsChecked ? 1 : 0)
       }, 0) * 100;
     },
     // 叠加优惠分类
@@ -182,6 +181,7 @@ export default {
     reset() {
       this.list = this.list.map(item => {
         item.goodsCount = 0;
+        item.goodsChecked = false;
         return item;
       })
     },
@@ -214,7 +214,18 @@ export default {
   },
 };
 </script>
+<style>
+  body #app .list-wrapper .van-popup {
+    bottom: 50px;
+  }
+</style>
 <style scoped>
+  .list-wrapper .van-list {
+    padding-bottom: 20px;
+  }
+  .list-wrapper .van-submit-bar {
+    z-index: 3000;
+  }
   .my-swipe {
     margin-top: 10px;
   }
