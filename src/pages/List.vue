@@ -100,8 +100,11 @@ export default {
     // 叠加优惠分类
     items() {
       const group = _.groupBy(this.list.map(item => {
-        if(item?.dishActivity?.[0]?.secondText && Number(item.currentPrice) <= 1) {
-          item.specCouponText = item?.dishActivity?.[0]?.secondText
+        const specCouponItem = item?.dishActivity?.[0];
+        const specCouponText = `${specCouponItem?.detailTagText}|${specCouponItem?.detailText}|${specCouponItem?.userOrderItemLimit === 0 ? '不互斥' : '互斥'}`;
+        const isSpecCoupon = (specCouponText && (specCouponItem?.detailText?.indexOf('限1份') > -1 || specCouponItem?.detailText?.indexOf('N选1') > -1))
+        if(isSpecCoupon) {
+          item.specCouponText = specCouponText
         }
         return item;
       }), (item) => {
@@ -127,10 +130,11 @@ export default {
       }))
     },
     filterCouponList() {
-      return _.filter(this.list, (item => {
+      const fList = _.filter(this.list, (item => {
         const curTab = this.items[this.activeIndex].text
-        const specCouponText = item?.dishActivity?.[0]?.secondText;
-        const isSpecCoupon = (specCouponText && Number(item.currentPrice) <= 1)
+        const specCouponItem = item?.dishActivity?.[0];
+        const specCouponText = `${specCouponItem?.detailTagText}|${specCouponItem?.detailText}|${specCouponItem?.userOrderItemLimit === 0 ? '不互斥' : '互斥'}`;
+        const isSpecCoupon = (specCouponText && (specCouponItem?.detailText?.indexOf('限1份') > -1 || specCouponItem?.detailText?.indexOf('N选1') > -1))
         if(curTab === 'all' && !this.foodsKeyword && !isSpecCoupon) {
           return true;
         }
@@ -145,6 +149,8 @@ export default {
         }
         return '无优惠' === curTab;
       }))
+      console.log('fList :>> ', fList);
+      return fList;
     }
   },
   components: {
