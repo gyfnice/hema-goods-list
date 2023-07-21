@@ -10,7 +10,7 @@ rebase-远程改动-1.0
 npm run dev
 打包
 npm run build
-
+dev-1.0
 运行服务端
 npm run dev:serve
 我是本地改动
