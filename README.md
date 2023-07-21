@@ -1,7 +1,7 @@
 下载依赖
 yarn install
 
-运行本地前端项目：
+运行本地前端项目：rebase
 补充安装依赖
 "@vitejs/plugin-vue": "^4.1.0",
 "vite": "^4.3.9",
