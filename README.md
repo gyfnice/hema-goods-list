@@ -3,6 +3,7 @@ yarn install
 
 运行本地前端项目：rebase
 has-rebase
+rebase-远程改动
 补充安装依赖
 "@vitejs/plugin-vue": "^4.1.0",
 "vite": "^4.3.9",
