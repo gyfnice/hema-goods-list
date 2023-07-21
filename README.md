@@ -1,7 +1,7 @@
 下载依赖
 yarn install
 
-运行本地前端项目：rebase
+运行本地前端项目：rebase--remote
 has-rebase
 rebase-远程改动-1.0
 补充安装依赖
