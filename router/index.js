@@ -4,7 +4,8 @@ const {
     queryChannelStore,
     queryAllTaskStore,
     queryGoodsByStore,
-    queryRelativeGoods
+    queryRelativeGoods,
+    coreUpdateCookie
 } = require('@/controller/index.js');
 const { run, queryAddress, requestByLngLat } = require('@/api.js');
 const { updateCookie, getCookie } = require('@/connection/index.js');
@@ -57,6 +58,14 @@ router.get('/api/hema/queryStoreText', async (context) => {
     context.response.body = {
         state: 1,
         list: res
+    };
+});
+// 定时更新cookie
+router.get('/api/hema/auto_query_cookie', async (context) => {
+    await coreUpdateCookie();
+    context.response.body = {
+        state: 1,
+        list: []
     };
 });
 // 设置cookie

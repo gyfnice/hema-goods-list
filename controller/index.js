@@ -2,8 +2,78 @@ const axios = require('axios');
 const _ = require('lodash');
 
 const { getCookie } = require('@/auth.js');
+const { replaceCookies } = require('@/utils/index.js');
+const { updateCookie } = require('@/connection/index.js');
 const { getSignConfig, fetchLatLngByKeword } = require('@/api.js');
 
+const coreUpdateCookie = async () => {
+    const mockData = {
+        extStatus: 0,
+        netType: 0,
+        isPage: false,
+        cartFrom: 'eleme_newretail',
+        exParams: JSON.stringify({
+            version_newretail: '1.0.3',
+            openNoApplyCouponQuery: true,
+            storeId: '407216037',
+            businessType: 0,
+            giftInfo: {},
+            cartFetchType: 'home',
+            shippingFee: 700,
+            takeoutPrice: 20,
+            selfFetchPrice: 0,
+            weightLimit: 20,
+            packagingFee: 0.9,
+            deviceId: '6AC390B27256480698D3540A7260BB2D|1688005162463',
+            lat: 39.913234,
+            lng: 116.477062,
+            newUser: false,
+            retailNewUser: false,
+            shopNewUser: true,
+            svpStatus: true,
+            channel: 22,
+            subChannel: 'ELE_APP',
+            nrChannel: 'mobile.default.default',
+            promiseTime: '',
+            toastFilter: [],
+            lastAddCartId: '',
+            lastCheckCartId: '',
+            sm_s_in_store: true,
+            newStyle: 1,
+            ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+            isH5: true,
+            wxAppId: '',
+            appId: '',
+            checkList: null,
+            exchangeList: [],
+            abFactorList: ['coupon_makeup_entry'],
+            lastQryExt: {},
+            pageType: 1,
+            cartTab: '',
+            queryFrom: '',
+            autoShowCoudan: ''
+        }),
+        bizChannel: 'mobile.default.default',
+        deviceId: '6AC390B27256480698D3540A7260BB2D|1688005162463',
+        lat: 39.913234,
+        lng: 116.477062
+    };
+    const axiosConfig = getSignConfig(mockData, {
+        api: 'mtop.alsc.trade.query.bag'
+    });
+    const res = await axios.get(
+        'https://alsc-buy2.ele.me/h5/mtop.alsc.trade.query.bag/5.0/5.0',
+        axiosConfig
+    );
+    const cookies = res.headers['set-cookie'] || [];
+    console.log('cookies :>> ', cookies);
+    let latestCookieStr = getCookie();
+    if (cookies.length > 1) {
+        latestCookieStr = replaceCookies(cookies, latestCookieStr);
+        await updateCookie(latestCookieStr);
+    }
+    return latestCookieStr;
+};
 const queryChannelStore = async ({ longitude, latitude, offset }) => {
     const mockData = {
         sceneCode: 'MINIAPP_ELEME_HOME_LIST',
@@ -140,6 +210,7 @@ module.exports = {
     queryChannelStore,
     queryGoodsByStore,
     queryAllTaskStore,
+    coreUpdateCookie,
     queryRelativeGoods
     //queryAddressList
 };

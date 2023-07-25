@@ -1,0 +1,12 @@
+I have a array, like this
+[
+  '_m_h5_tk=8e166ad001a32b2cb51e3e97e5789940_1690284085567;Path=/;Domain=ele.me;Max-Age=604800',
+  '_m_h5_tk_enc=46210e3a482962c1130f11eb6fbd1d1c;Path=/;Domain=ele.me;Max-Age=604800',
+  'thw=cn; Path=/; Domain=.taobao.com; Expires=Wed, 24-Jul-24 08:39:25 GMT;'
+]
+and I have a string cookie,like below this
+ubt_ssid=kebthe7o7mq9ppnxwnhn3xmtwbmiy90f_2023-07-06; cna=GNgjHVS6yzkCAd75iao5bcTC; t=360fca75316046550e4bae0e83a81d46; unb=2205079971913; munb=2205079971913; USERID=1497914586; UTUSER=1497914586; MOD_UTUSER=0; tzyy=0f7803c45500c71ce224382c1d33e336; _samesite_flag_=true; cookie2=1fe054e8c5f25a52043f70446a7e9e8a; _tb_token_=356bb7e93a86; SID=MWZlMDU0ZThjNWYyNWE1MjA0M2Y3MDQ0NmE3ZTllOGGMdYwPfxqfz7mq0oVXs3_f; ut_ubt_ssid=wenqgvudvf0x0rqhesb4jxybu1utuwcw_2023-07-17; x5check_ele=PfHXC2qr4CwoDAxAJSUul5%2F%2F9RAyDEqSF%2F9as0DH5K4%3D; xlly_s=1; sgcookie=E100Fg5ZovhmY8Qp4lSheBCF0oWhc5QYM56VhONVsn2t99RfskCpXMqfSPliQD78zci5Sy%2F7BNkowInCKJS%2BPbUDyRAsWh4jps1iN9VKvr6G0o0%3D; csg=b26ef933; t_eleuc4=id4=0%40BA%2FvuHCrrRj3aDAY4OywtYCngT7wuCPARydc2g%3D%3D; _m_h5_tk=512e4d10f1e08f186607905f1178a2af_1690272931795; _m_h5_tk_enc=4d3cefe9a72a15c6759fa7f8f610b8ca; _orbit_h5_utils_channel_=mobile.default.default.1690249501004; l=fBQqctx7N4NU5QEbBOfaFurza779sIR4MuPzaNbMi9fP_h6v5z7NW1_hUtKJCnGResQ2R38YsXPkBCe6VP5R5AuSORphZWDmnhlyN3pR.; tfstk=cdoCBQjpXbnN8ePNPW9Z5q6vyJzNZoQ4B1PqdInFU-qRhjHCidS4GlZ5JZaLjR1..; isg=BOLieQ5L8oLhuu773CLAH8CeM25EM-ZNFYw3RSx7D9UH_4B5FMMBXMw9Kz0DN17l
+
+now, i need you write a js function,
+Help me replace the two fields _m_h5_tk and _m_h5_tk_enc
+in the cookie string according to the returned content in the array

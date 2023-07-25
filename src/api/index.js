@@ -1,6 +1,11 @@
 import axios from 'axios';
 
 const mapList = {};
+export const updateAuthCookie = (params) => {
+    return axios.get(`/api/hema/auto_query_cookie`, {
+        params
+    });
+};
 export const queryGoodsByStore = (params) => {
     return axios.get(`/api/hema/queryStoreInGoods`, {
         params
