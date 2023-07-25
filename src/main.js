@@ -1,78 +1,88 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 
 import {
-  Area,
-  Search,
-  Button,
-  Card,
-  Space,
-  Col,
-  Tag,
-  Row,
-  Field,
-  Picker,
-  Image,
-  Popup,
-  List,
-  Toast,
-  Icon,
-  Stepper,
-  ActionSheet,
-  NavBar,
-  Cell,
-  Dialog,
-  Sticky,
-  Swipe,
-  Form,
-  CellGroup,
-  SwipeItem,
-  TreeSelect,
-  Checkbox,
-  SubmitBar
-} from "vant";
+    Area,
+    Search,
+    Button,
+    Badge,
+    Loading,
+    Card,
+    Space,
+    Col,
+    Tag,
+    Row,
+    Field,
+    Collapse,
+    CollapseItem,
+    Picker,
+    Image,
+    Popup,
+    List,
+    Toast,
+    Icon,
+    Stepper,
+    ActionSheet,
+    NavBar,
+    Cell,
+    Dialog,
+    Sticky,
+    Swipe,
+    Form,
+    CellGroup,
+    SwipeItem,
+    TreeSelect,
+    FloatingPanel,
+    FloatingBubble,
+    Checkbox,
+    SubmitBar
+} from 'vant';
 import _ from 'lodash';
-import "vant/lib/index.css";
+import 'vant/lib/index.css';
 
 import router from './router/index.js';
-import App from "./App.vue";
-import { store } from "./store/index.js";
+import App from './App.vue';
+import { store } from './store/index.js';
 
+import './reset.css';
+import './style.css';
 
-import './reset.css'
-import './style.css'
-
-const app = createApp(App)
+const app = createApp(App);
 window._ = _;
-app
-  .use(store)
-  .use(router)
-  .use(Icon)
-  .use(Sticky)
-  .use(Button)
-  .use(Col)
-  .use(Toast)
-  .use(Dialog)
-  .use(Swipe)
-  .use(SwipeItem)
-  .use(Form)
-  .use(Checkbox)
-  .use(CellGroup)
-  .use(Image)
-  .use(Tag)
-  .use(Space)
-  .use(Row)
-  .use(Field)
-  .use(Popup)
-  .use(Search)
-  .use(Area)
-  .use(Picker)
-  .use(SubmitBar)
-  .use(ActionSheet)
-  .use(NavBar)
-  .use(Stepper)
-  .use(Card)
-  .use(List)
-  .use(TreeSelect)
-  .use(Cell);
+app.use(store)
+    .use(router)
+    .use(Icon)
+    .use(FloatingPanel)
+    .use(Sticky)
+    .use(FloatingBubble)
+    .use(Loading)
+    .use(Badge)
+    .use(Button)
+    .use(Collapse)
+    .use(CollapseItem)
+    .use(Col)
+    .use(Toast)
+    .use(Dialog)
+    .use(Swipe)
+    .use(SwipeItem)
+    .use(Form)
+    .use(Checkbox)
+    .use(CellGroup)
+    .use(Image)
+    .use(Tag)
+    .use(Space)
+    .use(Row)
+    .use(Field)
+    .use(Popup)
+    .use(Search)
+    .use(Area)
+    .use(Picker)
+    .use(SubmitBar)
+    .use(ActionSheet)
+    .use(NavBar)
+    .use(Stepper)
+    .use(Card)
+    .use(List)
+    .use(TreeSelect)
+    .use(Cell);
 
-app.mount("#app");
+app.mount('#app');
