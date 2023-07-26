@@ -2,10 +2,13 @@ const axios = require('axios');
 const _ = require('lodash');
 
 const { replaceCookies } = require('@/utils/index.js');
+const { setCookie } = require('@/auth.js');
 const { updateCookie, getCookie } = require('@/connection/index.js');
 const { getSignConfig, fetchLatLngByKeword } = require('@/api.js');
 
 const coreUpdateCookie = async () => {
+    let latestCookieStr = await getCookie();
+    setCookie(latestCookieStr);
     const mockData = {
         extStatus: 0,
         netType: 0,
@@ -66,7 +69,6 @@ const coreUpdateCookie = async () => {
     );
     const cookies = res.headers['set-cookie'] || [];
     console.log('cookies :>> ', cookies);
-    let latestCookieStr = await getCookie();
     console.log('latestCookieStr :>> ', latestCookieStr);
     if (cookies.length > 1) {
         latestCookieStr = replaceCookies(cookies, latestCookieStr);

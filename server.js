@@ -14,11 +14,10 @@ const staticDirPath = path.join(__dirname, 'dist');
 // Init Koa.js server
 const server = new Koa();
 
-const runServer = () => {
+const runServer = async () => {
+    await coreUpdateCookie();
     cron.schedule('*/5 * * * *', async () => {
         console.log('running a update cookie task every 5 minutes');
-        const currentCookie = await getCookie();
-        setCookie(currentCookie);
         await coreUpdateCookie();
     });
     // handle fallback for HTML5 history API
