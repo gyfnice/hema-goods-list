@@ -1,9 +1,8 @@
 const axios = require('axios');
 const _ = require('lodash');
 
-const { getCookie } = require('@/auth.js');
 const { replaceCookies } = require('@/utils/index.js');
-const { updateCookie } = require('@/connection/index.js');
+const { updateCookie, getCookie } = require('@/connection/index.js');
 const { getSignConfig, fetchLatLngByKeword } = require('@/api.js');
 
 const coreUpdateCookie = async () => {
@@ -67,7 +66,8 @@ const coreUpdateCookie = async () => {
     );
     const cookies = res.headers['set-cookie'] || [];
     console.log('cookies :>> ', cookies);
-    let latestCookieStr = getCookie();
+    let latestCookieStr = await getCookie();
+    console.log('latestCookieStr :>> ', latestCookieStr);
     if (cookies.length > 1) {
         latestCookieStr = replaceCookies(cookies, latestCookieStr);
         await updateCookie(latestCookieStr);
