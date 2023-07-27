@@ -4,7 +4,7 @@
     "description": "",
     "main": "sign.js",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --port 3000",
         "dev:host": "vite  --host",
         "build": "vite build",
         "dev:serve": "nodemon index.js",
@@ -39,6 +39,7 @@
         "lodash": "^4.17.21",
         "node-cron": "^3.0.2",
         "pg": "^8.11.1",
+        "pg-promise": "^11.5.1",
         "pm2": "^5.3.0",
         "prettier": "^2.2.0",
         "vant": "^4.6.0",

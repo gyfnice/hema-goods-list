@@ -190,7 +190,8 @@ async function run(storeId) {
         }-库存${item.realLeftNum}-叠加优惠:${item?.couponTag?.actDesc || "无"}`
       );
     }); */
-    return _.reverse(list);
+    const goodsData = _.uniqBy(_.reverse(list), 'name');
+    return goodsData;
 }
 const whiteList = ['盒马', '正大优鲜', '永辉超市', '京客隆', '物美', '超市'];
 const requestByLngLat = async ({ curInfo, kw }) => {

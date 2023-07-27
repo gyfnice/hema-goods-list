@@ -31,6 +31,7 @@ import {
     CellGroup,
     SwipeItem,
     TreeSelect,
+    Divider,
     FloatingPanel,
     FloatingBubble,
     Checkbox,
@@ -52,6 +53,7 @@ app.use(store)
     .use(router)
     .use(Icon)
     .use(FloatingPanel)
+    .use(Divider)
     .use(Sticky)
     .use(FloatingBubble)
     .use(Loading)

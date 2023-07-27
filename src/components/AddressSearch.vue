@@ -20,6 +20,29 @@
             />
         </van-col>
     </van-row>
+    <div class="history-area-wrapper" v-if="hasHistory">
+        <van-divider
+            :style="{
+                color: '#1989fa',
+                borderColor: '#1989fa',
+                margin: '0 0px',
+                marginBottom: '10px'
+            }"
+        >
+            搜索历史
+        </van-divider>
+        <van-space fill wrap>
+            <van-tag
+                @click="tagAddressClick(item)"
+                plain
+                size="medium"
+                type="primary"
+                :key="item"
+                v-for="item in selectedHistoryAddress"
+                >{{ item.city }}•{{ item.address }}</van-tag
+            >
+        </van-space>
+    </div>
     <van-popup v-model:show="showPicker" round position="bottom">
         <van-picker
             :columns="columns"
@@ -33,14 +56,19 @@ import { ref, watch, computed, onMounted } from 'vue';
 
 import { useStore } from 'vuex';
 import { cityMapInfo } from '@/config/city.js';
-const emit = defineEmits(['handleChange']);
-
+const emit = defineEmits(['handleChange', 'hidePane']);
+const props = defineProps({
+    hasHistory: Boolean
+});
 const store = useStore();
 const showPicker = ref(false);
 const keyword = ref('');
 
 const currentCity = computed(() => store.state.currentCity);
 const searchAddress = computed(() => store.state.searchAddress);
+const selectedHistoryAddress = computed(
+    () => store.state.selectedHistoryAddress
+);
 const columns = [
     { text: '北京', value: '0' },
     { text: '上海', value: '1' },
@@ -61,6 +89,11 @@ const columns = [
     { text: '南京', value: '13' },
     { text: '苏州', value: '14' }
 ];
+const tagAddressClick = (item) => {
+    store.commit('selectCity', item.city);
+    store.commit('changeAddress', item.address);
+    emit('hidePane');
+};
 const onConfirm = ({ selectedOptions }) => {
     showPicker.value = false;
     const cityName = selectedOptions[0].text;

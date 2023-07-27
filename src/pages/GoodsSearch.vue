@@ -74,17 +74,17 @@
         closeable
         v-model:show="showRight"
         position="bottom"
-        :style="{ height: '30%', padding: '20px' }"
+        :style="{ height: '50%', padding: '20px' }"
     >
         <div class="look-wrapper-content">
             <h4>选择比价区域</h4>
             <van-space direction="vertical" fill>
-                <AddressSearch />
+                <AddressSearch @hidePane="hidePane" :hasHistory="true" />
                 <van-row>
                     <van-col span="16" offset="4"></van-col>
                     <van-col span="4">
                         <van-button
-                            @click="showRight = false333333"
+                            @click="showRight = false"
                             size="small"
                             type="primary"
                             >确认</van-button
@@ -134,15 +134,15 @@ const goodsList = ref([]);
 const activeIndex = ref(0);
 const activeGroupIndex = ref(['0']);
 
-watch(
-    () => keyword.value,
-    _.debounce(async (value) => {
-        if (!value || !value.trim()) {
-            return;
-        }
-        const kword = value.trim();
-        const info = cityMapInfo[currentCity.value];
-        loading.value = true;
+const searchGoods = async (value) => {
+    if (!value || !value.trim()) {
+        return;
+    }
+    const kword = value.trim();
+    const info = cityMapInfo[currentCity.value];
+    store.commit('saveSearchAddress');
+    loading.value = true;
+    try {
         const resData = await queryGoodsByStore({
             keyword: searchAddress.value,
             goodsKeyword: kword,
@@ -151,8 +151,20 @@ watch(
         });
         loading.value = false;
         goodsList.value = resData?.data?.list || [];
+    } catch (e) {
+        loading.value = false;
+    }
+};
+watch(
+    () => keyword.value,
+    _.debounce((value) => {
+        searchGoods(value);
     }, 500)
 );
+const hidePane = () => {
+    showRight.value = false;
+    searchGoods(keyword.value);
+};
 const sortList = (list) => {
     console.log('list :>> ', list);
     return _.reverse(

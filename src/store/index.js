@@ -19,10 +19,23 @@ export const store = createStore({
                 scheme: 'https://h5.ele.me/newretail/p/emall-shop/?store_id=239354227&shop_type=emall&hideNavbar=1&geolat=40.0708&geolng=116.336116&fetchType=0',
                 text: '盒马鲜生(国贸)'
             },
+            selectedHistoryAddress: Store('selectedHistoryAddress') || [],
             historyList: []
         };
     },
     mutations: {
+        saveSearchAddress(state) {
+            console.log('state.searchAddress :>> ', state.searchAddress);
+            state.selectedHistoryAddress.push({
+                city: state.currentCity,
+                address: state.searchAddress
+            });
+            state.selectedHistoryAddress = _.uniqBy(
+                state.selectedHistoryAddress,
+                'address'
+            );
+            Store('selectedHistoryAddress', state.selectedHistoryAddress);
+        },
         selectCity(state, cityName) {
             state.currentCity = cityName;
             Store('currentCity', cityName);

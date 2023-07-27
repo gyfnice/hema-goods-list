@@ -20,10 +20,15 @@
                             checked-color="#ee0a24"
                         ></van-checkbox>
                     </div>
+                    <van-tag v-if="item.startWith > 1" plain type="primary"
+                        >{{ item.startWith }}份起购</van-tag
+                    >
+
                     <van-stepper
                         @change="stepperChange(item)"
                         :show-input="item.goodsCount > 0"
                         :show-minus="item.goodsCount > 0"
+                        :step="item.startWith || 1"
                         :min="0"
                         v-model="item.goodsCount"
                         theme="round"

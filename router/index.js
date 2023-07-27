@@ -9,6 +9,8 @@ const {
 } = require('@/controller/index.js');
 const { run, queryAddress, requestByLngLat } = require('@/api.js');
 const { updateCookie, getCookie } = require('@/connection/index.js');
+const { recordPriceByStoreId } = require('@/controller/handleData.js');
+
 const mockGoodsList = require('@/data/goodsList.json');
 
 // 获取商品列表接口
@@ -17,6 +19,7 @@ router.get('/api/hema/goodsList', async (context) => {
     const queryParams = context.request.query;
     const storeId = queryParams.storeId;
     const list = await run(storeId);
+    recordPriceByStoreId({ goodsData: list || [], storeId });
     if (list?.code === 401) {
         context.response.body = {
             state: 401,

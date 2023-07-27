@@ -15,7 +15,9 @@ const staticDirPath = path.join(__dirname, 'dist');
 const server = new Koa();
 
 const runServer = async () => {
-    await coreUpdateCookie();
+    if (process.env.MODE !== 'dev') {
+        await coreUpdateCookie();
+    }
     cron.schedule('*/5 * * * *', async () => {
         console.log('running a update cookie task every 5 minutes');
         await coreUpdateCookie();
