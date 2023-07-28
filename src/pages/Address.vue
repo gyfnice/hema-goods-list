@@ -1,7 +1,7 @@
 <template>
     <van-nav-bar
         @click-right="onClickRight"
-        right-text="历史门店"
+        :right-text="historyList.length > 0 ? '历史门店' : ''"
         @click-left="onClickLeft"
         title="选择门店"
         left-text="返回"
@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
@@ -113,6 +113,9 @@ const historyList = ref(Store('historyList') || []);
 const router = useRouter();
 const historyIndex = ref(0);
 
+onMounted(() => {
+    historyList.value = Store('historyList') || [];
+});
 const searchLocation = async ({ lngInfo, kword }) => {
     loading.value = true;
     try {
@@ -160,12 +163,18 @@ const storeMark = (item, mark, event) => {
     Store('historyList', _.uniqBy(historyList.value, 'text'));
 };
 const selectStoreId = (item) => {
-    historyList.value.push(item);
+    if (
+        !_.find(historyList.value, (o) => {
+            return o.storeId == item.storeId;
+        })
+    ) {
+        historyList.value.push(item);
+        Store('historyList', _.uniqBy(historyList.value, 'text'));
+    }
     store.commit('select_store_id', item);
     router.push({
         name: 'List'
     });
-    Store('historyList', _.uniqBy(historyList.value, 'text'));
 };
 </script>
 

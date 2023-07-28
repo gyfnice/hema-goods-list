@@ -40,12 +40,16 @@ import {
 import _ from 'lodash';
 import 'vant/lib/index.css';
 
+import { recordCollectStore } from '@/api/index.js';
+
 import router from './router/index.js';
 import App from './App.vue';
 import { store } from './store/index.js';
 
 import './reset.css';
 import './style.css';
+
+recordCollectStore();
 
 const app = createApp(App);
 window._ = _;

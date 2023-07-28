@@ -9,10 +9,47 @@ const {
 } = require('@/controller/index.js');
 const { run, queryAddress, requestByLngLat } = require('@/api.js');
 const { updateCookie, getCookie } = require('@/connection/index.js');
-const { recordPriceByStoreId } = require('@/controller/handleData.js');
+const {
+    recordPriceByStoreId,
+    fetchGoodsPriceRecord
+} = require('@/controller/handleData.js');
 
 const mockGoodsList = require('@/data/goodsList.json');
 
+router.get('/api/hema/recordCollectStore', async (context) => {
+    // context 上下文
+    const queryParams = context.request.query;
+    const storeIds = queryParams.storeIds.split(',');
+    const handleStore = async (storeId) => {
+        const list = await run(storeId);
+        await recordPriceByStoreId({ goodsData: list || [], storeId });
+    };
+    try {
+        await Promise.allSettled(
+            storeIds.map((storeId) => {
+                return handleStore(storeId);
+            })
+        );
+        context.response.body = {
+            state: 200
+        };
+    } catch (res) {
+        context.response.body = {
+            state: 500
+        };
+    }
+});
+// 获取商品价格历史
+router.get('/api/hema/queryGoodsPriceHistory', async (context) => {
+    // context 上下文
+    const queryParams = context.request.query;
+    //const list = await queryAddress(queryParams);
+    const list = await fetchGoodsPriceRecord(queryParams);
+    context.response.body = {
+        state: 1,
+        list
+    };
+});
 // 获取商品列表接口
 router.get('/api/hema/goodsList', async (context) => {
     // context 上下文

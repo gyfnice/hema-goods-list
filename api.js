@@ -232,7 +232,6 @@ const requestByLngLat = async ({ curInfo, kw }) => {
         'https://waimai-guide.ele.me/h5/mtop.relationrecommend.tinyapprecommend.recommend/1.0/5.0/',
         addressConfig
     );
-    console.log('res.data :>> ', res.data);
     if (kw === '超市') {
         return res?.data?.data?.result?.[0]?.cards || [];
     }

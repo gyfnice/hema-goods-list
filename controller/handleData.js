@@ -50,7 +50,17 @@ const recordPriceByStoreId = async ({ goodsData = [], storeId }) => {
     return 200;
 };
 
+const fetchGoodsPriceRecord = async ({ storeId, name }) => {
+    const checkResult = await db.any(
+        'SELECT * FROM goods_prices WHERE store_id = $1 AND goods_name = $2',
+        [storeId, name]
+    );
+    console.log('checkResult :>> ', checkResult);
+    return checkResult;
+};
+
 module.exports = {
-    recordPriceByStoreId
+    recordPriceByStoreId,
+    fetchGoodsPriceRecord
     //queryAddressList
 };

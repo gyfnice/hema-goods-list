@@ -1,6 +1,13 @@
 <template>
     <div class="list-wrapper">
         <van-nav-bar :title="currentStoreItem?.text">
+            <template #left>
+                <van-icon
+                    @click="toggleCollect"
+                    :name="isCollectStore ? 'like' : 'like-o'"
+                    size="18"
+                />
+            </template>
             <template #right>
                 <van-space fill>
                     <van-icon @click="shareStore" name="share-o" />
@@ -57,21 +64,6 @@
             <List :isGoodsCart="true" :loading="loading" :list="goodsList" />
         </van-action-sheet>
     </div>
-    <van-dialog
-        :show-confirm-button="false"
-        :show="showPhoto"
-        :title="currentGoodsItem.name"
-        :close-on-click-overlay="true"
-    >
-        <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-            <van-swipe-item v-for="item in photos" :key="item">
-                <van-image fit="cover" position="center" :src="item.url" />
-            </van-swipe-item>
-        </van-swipe>
-        <van-button @click="hidePhotoModal" type="primary" block
-            >关闭</van-button
-        >
-    </van-dialog>
     <van-action-sheet
         v-model:show="switchVisible"
         :actions="collectStoreList"
@@ -108,13 +100,13 @@ export default {
         };
     },
     computed: {
-        ...mapState([
-            'currentStoreItem',
-            'photos',
-            'showPhoto',
-            'currentGoodsItem'
-        ]),
+        ...mapState(['currentStoreItem']),
         ...mapGetters(['currentStoreId']),
+        isCollectStore() {
+            return _.find(this.collectStoreList, (item) => {
+                return item.storeId == Number(this.currentStoreId);
+            });
+        },
         collectStoreList() {
             const list = this.collectList
                 .filter((item) => item.collected)
@@ -122,7 +114,7 @@ export default {
                     item.name = item.text;
                     return item;
                 });
-            return _.uniqBy(list, 'name');
+            return _.uniqBy(list, 'storeId');
         },
         totalPrice() {
             return (
@@ -227,7 +219,26 @@ export default {
         this.fetchList();
     },
     methods: {
-        ...mapMutations(['hidePhotoModal', 'select_store_id']),
+        ...mapMutations(['select_store_id']),
+        toggleCollect() {
+            let list = _.uniqBy([...this.collectList], 'text');
+            if (this.isCollectStore) {
+                _.remove(list, (n) => {
+                    return n.storeId == this.currentStoreId;
+                });
+            } else {
+                _.remove(list, (n) => {
+                    return n.storeId == this.currentStoreId;
+                });
+                list.push({
+                    collected: true,
+                    ...this.currentStoreItem,
+                    text: this.currentStoreItem?.name
+                });
+            }
+            this.collectList = [...list];
+            Store('historyList', list);
+        },
         shareStore() {
             var oInput = document.createElement('input');
             oInput.value = `https://${window.location.hostname}?storeId=${this.currentStoreId}&storeName=${this.currentStoreItem?.text}`;
