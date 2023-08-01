@@ -56,20 +56,6 @@
             </template>
         </van-card>
     </van-list>
-    <van-dialog
-        v-model:show="lineShow"
-        title="价格趋势"
-        :close-on-click-overlay="lineLoading"
-        :show-cancel-button="false"
-        :show-confirm-button="!lineLoading"
-    >
-        <van-loading v-if="lineLoading" />
-        <Line
-            :list="lineData"
-            :title="currentItemInfo.text"
-            v-if="lineData.length > 0"
-        />
-    </van-dialog>
 </template>
 
 <script setup>
@@ -77,9 +63,6 @@ import { ref, watch, computed } from 'vue';
 import { useStore } from 'vuex';
 // import { useFuse } from '@vueuse/integrations/useFuse';
 import { useRouter } from 'vue-router';
-
-import { queryGoodsPriceHistory } from '@/api/index.js';
-import Line from '@/components/Line.vue';
 
 const router = useRouter();
 const props = defineProps({
@@ -118,20 +101,7 @@ const goodsList = computed(() => {
 }); */
 const store = useStore();
 const displayLineChart = async (item) => {
-    lineShow.value = true;
-    lineData.value = [];
-    currentItemInfo.value.text = item.name;
-    try {
-        lineLoading.value = true;
-        const res = await queryGoodsPriceHistory({
-            storeId: item.storeId,
-            name: item.name
-        });
-        lineData.value = res?.data?.list || [];
-        lineLoading.value = false;
-    } catch (res) {
-        lineLoading.value = false;
-    }
+    store.dispatch('fetchGoodsLineChart', item);
 };
 const selectCard = (item) => {
     store.commit('select_photo', item);

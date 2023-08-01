@@ -11,11 +11,23 @@ const { run, queryAddress, requestByLngLat } = require('@/api.js');
 const { updateCookie, getCookie } = require('@/connection/index.js');
 const {
     recordPriceByStoreId,
-    fetchGoodsPriceRecord
+    fetchGoodsPriceRecord,
+    queryMonthSellData
 } = require('@/controller/handleData.js');
 
 const mockGoodsList = require('@/data/goodsList.json');
 
+// 获取商品售卖数量
+router.get('/api/hema/queryMonthSellData', async (context) => {
+    // context 上下文
+    const queryParams = context.request.query;
+    //const list = await queryAddress(queryParams);
+    const list = await queryMonthSellData(queryParams);
+    context.response.body = {
+        state: 1,
+        list
+    };
+});
 router.get('/api/hema/recordCollectStore', async (context) => {
     // context 上下文
     const queryParams = context.request.query;

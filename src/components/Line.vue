@@ -34,6 +34,7 @@ export default {
     components: {
         Line
     },
+    mounted() {},
     data() {
         return {
             chartData: {
@@ -49,14 +50,30 @@ export default {
                 ]
             },
             chartOptions: {
-                responsive: true
+                responsive: true,
+                layout: {
+                    padding: '0 16px'
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
             }
         };
     }
 };
 </script>
-<style lang="less" scoped>
-.line-wrap {
-    height: 215px;
-}
-</style>
+<style lang="less" scoped></style>

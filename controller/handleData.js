@@ -1,5 +1,15 @@
 const { pgp, db } = require('@/connection/index.js');
+const _ = require('lodash');
 
+async function queryMonthSellData() {
+    const checkResult = await db.any(
+        'SELECT * FROM goods_prices WHERE month_sell >= 50;'
+    );
+    const storeGroup = _.groupBy(checkResult, (item) => {
+        return item.store_name;
+    });
+    return storeGroup;
+}
 async function doesRecordExist(storeId) {
     const today = new Date().toISOString().slice(0, 10); // Get today's date in the format 'YYYY-MM-DD'
     const checkResult = await db.any(
@@ -55,12 +65,12 @@ const fetchGoodsPriceRecord = async ({ storeId, name }) => {
         'SELECT * FROM goods_prices WHERE store_id = $1 AND goods_name = $2',
         [storeId, name]
     );
-    console.log('checkResult :>> ', checkResult);
     return checkResult;
 };
 
 module.exports = {
     recordPriceByStoreId,
+    queryMonthSellData,
     fetchGoodsPriceRecord
     //queryAddressList
 };

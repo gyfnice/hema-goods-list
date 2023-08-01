@@ -2,11 +2,14 @@
     <div class="list-wrapper">
         <van-nav-bar :title="currentStoreItem?.text">
             <template #left>
-                <van-icon
-                    @click="toggleCollect"
-                    :name="isCollectStore ? 'like' : 'like-o'"
-                    size="18"
-                />
+                <van-space>
+                    <van-icon
+                        @click="toggleCollect"
+                        :name="isCollectStore ? 'like' : 'like-o'"
+                        size="18"
+                    />
+                    <!-- <van-icon name="bar-chart-o" /> -->
+                </van-space>
             </template>
             <template #right>
                 <van-space fill>
@@ -232,8 +235,9 @@ export default {
                 });
                 list.push({
                     collected: true,
-                    ...this.currentStoreItem,
-                    text: this.currentStoreItem?.name
+                    storeId: this.currentStoreId,
+                    text: this.currentStoreItem?.text,
+                    name: this.currentStoreItem?.text
                 });
             }
             this.collectList = [...list];
