@@ -15,8 +15,9 @@
         >
     </van-dialog>
     <van-dialog
+        v-if="lineShow"
         v-model:show="lineShow"
-        title="价格趋势"
+        title="趋势分析"
         :close-on-click-overlay="lineLoading"
         :show-cancel-button="false"
         :show-confirm-button="false"
@@ -24,13 +25,9 @@
         <van-space align="center" fill direction="vertical">
             <van-loading v-if="lineLoading">价格趋势加载中...</van-loading>
         </van-space>
-        <Line
-            :list="lineData"
-            :title="lineGoodsItem.name"
-            v-if="lineData.length > 0 && lineShow"
-        />
+        <Line :list="lineData" :title="lineGoodsItem.name" v-if="lineShow" />
         <van-space align="center" fill direction="vertical">
-            <h3>{{ lineGoodsItem.name }}</h3>
+            <h4>{{ lineGoodsItem.name }}</h4>
             <van-image
                 width="10rem"
                 height="10rem"

@@ -10,6 +10,12 @@ async function queryMonthSellData() {
     });
     return storeGroup;
 }
+async function queryAllStoreName() {
+    const result = await db.any('SELECT DISTINCT store_name FROM goods_prices');
+    console.log('Unique store_names:');
+    console.log(result);
+    return result;
+}
 async function doesRecordExist(storeId) {
     const today = new Date().toISOString().slice(0, 10); // Get today's date in the format 'YYYY-MM-DD'
     const checkResult = await db.any(
@@ -71,6 +77,7 @@ const fetchGoodsPriceRecord = async ({ storeId, name }) => {
 module.exports = {
     recordPriceByStoreId,
     queryMonthSellData,
-    fetchGoodsPriceRecord
+    fetchGoodsPriceRecord,
+    queryAllStoreName
     //queryAddressList
 };
