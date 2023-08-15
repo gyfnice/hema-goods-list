@@ -40,6 +40,14 @@
         >
     </van-dialog>
     <router-view></router-view>
+    <van-tabbar v-model="activeNav" @change="changeNav">
+        <van-tabbar-item name="List" icon="home-o">首页</van-tabbar-item>
+        <van-tabbar-item name="goodsCompare" icon="search"
+            >超市比价</van-tabbar-item
+        >
+        <van-tabbar-item name="address" icon="shop-o">搜索门店</van-tabbar-item>
+        <!-- <van-tabbar-item name="mine" icon="setting-o">设置</van-tabbar-item> -->
+    </van-tabbar>
 </template>
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
@@ -49,6 +57,19 @@ import Line from '@/components/Line.vue';
 export default {
     components: {
         Line
+    },
+    data() {
+        return {
+            activeNav: ''
+        };
+    },
+    watch: {
+        '$route.name': function (val) {
+            this.activeNav = val;
+        }
+    },
+    mounted() {
+        console.log('this.$route :>> ', this.$route, this.$route.name);
     },
     computed: {
         ...mapState([
@@ -63,7 +84,12 @@ export default {
         ])
     },
     methods: {
-        ...mapMutations(['hidePhotoModal', 'hideLineModal'])
+        ...mapMutations(['hidePhotoModal', 'hideLineModal']),
+        changeNav(name) {
+            this.$router.push({
+                name
+            });
+        }
     }
 };
 </script>

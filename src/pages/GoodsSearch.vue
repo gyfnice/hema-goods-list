@@ -9,6 +9,7 @@
     />
     <van-floating-bubble
         axis="xy"
+        :offset="{ y: 500 }"
         icon="records"
         magnetic="x"
         @click="showGoodsRight = true"
@@ -61,7 +62,7 @@
                 :loading="false"
                 :list="
                     sortList(
-                        filterCouponList.filter(
+                        goodsList.filter(
                             (item) => item.storeName === groupItem.text
                         )
                     )
@@ -130,7 +131,6 @@ const showRight = ref(false);
 const showGoodsRight = ref(false);
 const loading = ref(false);
 const keyword = ref('');
-const goodsList = ref([]);
 const activeIndex = ref(0);
 const activeGroupIndex = ref(['0']);
 
@@ -150,7 +150,7 @@ const searchGoods = async (value) => {
             lng: info.log
         });
         loading.value = false;
-        goodsList.value = resData?.data?.list || [];
+        store.commit('set_search_goods_list', resData?.data?.list || []);
     } catch (e) {
         loading.value = false;
     }
@@ -183,6 +183,13 @@ const scoreSort = (food) => {
     }
     return bonusScore + Math.sqrt(food.monthSell || 0.5);
 };
+const currentCity = computed(() => store.state.currentCity);
+const searchAddress = computed(() => store.state.searchAddress);
+const goodsList = computed(() => store.state.goodsSearchList);
+const searchLen = computed(() => {
+    const len = (searchAddress.value.length || 3) + 5;
+    return 24 - len < 4 ? 4 : 24 - len;
+});
 const groupItems = computed(() => {
     const group = _.groupBy(goodsList.value, (item) => {
         item.goodsCount = 0;
@@ -207,20 +214,10 @@ const groupItems = computed(() => {
     ]);
     return _.reverse(sortList);
 });
-const filterCouponList = computed(() => {
-    return goodsList.value;
-});
 const cartsList = computed(() => {
     return _.filter(goodsList.value, (item) => {
         return item.goodsCount > 0;
     });
-});
-
-const currentCity = computed(() => store.state.currentCity);
-const searchAddress = computed(() => store.state.searchAddress);
-const searchLen = computed(() => {
-    const len = (searchAddress.value.length || 3) + 5;
-    return 24 - len < 4 ? 4 : 24 - len;
 });
 
 const onClickLeft = () => {

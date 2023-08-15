@@ -26,6 +26,12 @@
                         size="20"
                         color="#1989fa"
                     />
+                    <van-tag
+                        v-if="item?.dishActivity?.[0]?.detailText === '限1份'"
+                        plain
+                        type="primary"
+                        >{{ item?.dishActivity?.[0]?.detailText }}</van-tag
+                    >
                     <van-tag v-if="item.startWith > 1" plain type="primary"
                         >{{ item.startWith }}份起购</van-tag
                     >

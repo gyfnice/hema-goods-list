@@ -14,13 +14,11 @@
             <template #right>
                 <van-space fill>
                     <van-icon @click="shareStore" name="share-o" />
-                    <van-icon @click="goQueryGoods" name="aim" />
                     <van-icon
                         v-if="collectStoreList.length > 0"
                         @click="switchStore"
                         name="exchange"
                     />
-                    <van-icon @click="selectCity" name="search" size="18" />
                 </van-space>
             </template>
         </van-nav-bar>
@@ -315,15 +313,22 @@ export default {
 </script>
 <style>
 body #app .list-wrapper .van-popup {
-    bottom: 50px;
+    bottom: 100px;
+}
+body #app .list-wrapper .van-overlay {
+    height: 90vh;
+}
+body #app .van-action-sheet {
+    z-index: 12002 !important;
 }
 </style>
 <style scoped>
 .list-wrapper .van-list {
-    padding-bottom: 20px;
+    padding-bottom: 80px;
 }
 .list-wrapper .van-submit-bar {
     z-index: 3000;
+    bottom: 50px;
 }
 .my-swipe {
     margin-top: 10px;

@@ -12,6 +12,7 @@ export const store = createStore({
     state() {
         return {
             photos: [],
+            goodsSearchList: [],
             queryParams: {},
             searchAddress: Store('searchAddress') || '',
             currentCity: Store('currentCity') || '北京',
@@ -55,6 +56,9 @@ export const store = createStore({
         },
         hidePhotoModal(state) {
             state.showPhoto = false;
+        },
+        set_search_goods_list(state, list) {
+            state.goodsSearchList = list || [];
         },
         select_photo(state, item) {
             state.currentGoodsItem = item;

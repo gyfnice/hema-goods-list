@@ -5,6 +5,8 @@ import {
     Search,
     Button,
     Badge,
+    Tabbar,
+    TabbarItem,
     Loading,
     Card,
     Space,
@@ -63,6 +65,8 @@ app.use(store)
     .use(Loading)
     .use(Badge)
     .use(Button)
+    .use(Tabbar)
+    .use(TabbarItem)
     .use(Collapse)
     .use(CollapseItem)
     .use(Col)
