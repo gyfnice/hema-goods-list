@@ -197,15 +197,15 @@ const groupItems = computed(() => {
         item.scoreWeight = scoreSort(item);
         return item.storeName;
     });
-    console.log('group :>> ', group);
     const list = _.keys(group).map((storeName) => {
         const curList = goodsList.value.filter(
             (item) => item.storeName == storeName
         );
         return {
             text: storeName,
-            deliveryActivity: curList[0].deliveryActivity,
-            descs: curList[0].descs,
+            deliveryActivity: curList?.[0]?.deliveryActivity || {},
+            descs: curList?.[0]?.descs || [],
+            imagePath: curList?.[0]?.imagePath || '',
             priceSortWeight: curList.reduce((pre, val) => {
                 return pre + scoreSort(val);
             }, 0)

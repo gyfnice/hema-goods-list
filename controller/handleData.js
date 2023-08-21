@@ -26,6 +26,7 @@ async function doesRecordExist(storeId) {
 }
 
 const recordPriceByStoreId = async ({ goodsData = [], storeId }) => {
+    if (goodsData?.code) return;
     // await db.none('DELETE FROM goods_prices WHERE store_id = $1', storeId);
     const recordExists = await doesRecordExist(storeId);
     if (recordExists) {

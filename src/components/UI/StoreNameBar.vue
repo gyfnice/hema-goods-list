@@ -1,23 +1,32 @@
 <template>
     <span class="custom-title">
-        <van-space>
-            {{ item?.text }}
+        <van-space wrap>
+            <van-image
+                v-if="sourceFrom !== 'home'"
+                width="40"
+                height="40"
+                fit="cover"
+                round
+                position="left"
+                :src="item.imagePath"
+            />
+            <span v-if="sourceFrom !== 'home'">{{ item?.text }}</span>
             <slot></slot>
-            <span>|</span>
-        </van-space>
-        <van-space v-if="item.deliveryActivity">
-            <!-- <van-tag color="#ffe1e1" text-color="#ad0000">
-                                    {{
-                                        item?.piecewiseAgentFee?.description ||
-                                        `配送费: ${item.floatDeliveryFee}元`
-                                    }}
-                                </van-tag> -->
-            <van-tag color="#fff" text-color="#666666">
-                {{ item.deliveryActivity.deliveryMsg }}
-            </van-tag>
-            <van-tag color="#fff" text-color="#666666">
-                起送¥{{ item.deliveryActivity.startPrice }}
-            </van-tag>
+            <span v-if="sourceFrom !== 'home'">|</span>
+            <van-space v-if="item.deliveryActivity">
+                <!-- <van-tag color="#ffe1e1" text-color="#ad0000">
+                                        {{
+                                            item?.piecewiseAgentFee?.description ||
+                                            `配送费: ${item.floatDeliveryFee}元`
+                                        }}
+                                    </van-tag> -->
+                <van-tag color="#fff" text-color="#666666">
+                    {{ item.deliveryActivity.deliveryMsg }}
+                </van-tag>
+                <van-tag color="#fff" text-color="#666666">
+                    起送¥{{ item.deliveryActivity.startPrice }}
+                </van-tag>
+            </van-space>
         </van-space>
     </span>
     <van-space fill wrap>
@@ -34,6 +43,7 @@
 </template>
 <script setup>
 const props = defineProps({
-    item: Object
+    item: Object,
+    sourceFrom: String
 });
 </script>

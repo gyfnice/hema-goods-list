@@ -191,11 +191,13 @@ const queryChannelStoreV2 = async ({ longitude, latitude, offset }) => {
         console.log(
             'res.data?.data?.data?.retail_shoplist :>> ',
             offset,
+            res.data,
             res.data?.data?.data?.retail_shoplist
         );
     }
-    _.map(list, (item) => {
+    _.map(list, (item, index) => {
         const info = item?.fields || {};
+        info.offsetWeight = offset + index;
         queue.push(info);
     });
     return queue;
@@ -234,7 +236,11 @@ const queryAllTaskStore = async (params) => {
             }
         });
     });
-    const sortList = _.uniqBy(queue, 'storeId');
+    const sortList = _.sortBy(_.uniqBy(queue, 'storeId'), [
+        function (store) {
+            return store.offsetWeight;
+        }
+    ]);
     return sortList;
 };
 const queryGoodsByStore = async ({ storeId, keyword }) => {
@@ -284,9 +290,9 @@ const queryRelativeGoods = async (params) => {
     _.map(resList, (item) => {
         _.map(item.value, (info) => {
             const storeInfo = storeMap[info.storeId];
-            console.log('storeInfo :>> ', storeInfo);
             queue.push({
                 deliveryActivity: storeInfo.deliveryActivity,
+                imagePath: storeInfo.imagePath,
                 descs: _.uniqBy(
                     (storeInfo?.tag?.detail || []).concat(
                         storeInfo?.tag?.summary || []

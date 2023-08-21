@@ -28,6 +28,13 @@
             :items="items"
         >
             <template #content>
+                <div class="nav-search-wrapper">
+                    <StoreNameBar
+                        v-if="currentStoreItem?.deliveryActivity"
+                        sourceFrom="home"
+                        :item="currentStoreItem || {}"
+                    />
+                </div>
                 <van-sticky :offset-top="40">
                     <div class="nav-search-wrapper">
                         <van-space fill>
@@ -82,6 +89,8 @@ import { showToast } from 'vant';
 import { getGoodsListByServer } from '@/api';
 import { Store, groupCopywriting } from '@/utils/index.js';
 import List from '@/components/List.vue';
+import StoreNameBar from '@/components/UI/StoreNameBar.vue';
+
 let storeMap = {};
 export default {
     created() {
@@ -212,7 +221,8 @@ export default {
         }
     },
     components: {
-        List
+        List,
+        StoreNameBar
     },
     async mounted() {
         this.collectList = Store('historyList') || [];
@@ -290,23 +300,28 @@ export default {
             const storeId = this.currentStoreId;
             if (!storeMap[storeId]) {
                 this.loading = true;
-                const res = await getGoodsListByServer({
-                    storeId
-                });
-                this.loading = false;
-                if (res.data.state === 401) {
-                    showToast(res?.data?.message);
-                    return;
+                try {
+                    const res = await getGoodsListByServer({
+                        storeId
+                    });
+                    this.loading = false;
+                    if (res.data.state === 401) {
+                        showToast(res?.data?.message);
+                        return;
+                    }
+                    storeMap[storeId] = _.uniqBy(
+                        (res?.data?.list || []).map((item) => {
+                            item.goodsCount = 0;
+                            return item;
+                        }),
+                        'name'
+                    );
+                } catch (err) {
+                    this.loading = false;
+                    this.list = [];
                 }
-                storeMap[storeId] = _.uniqBy(
-                    res.data.list.map((item) => {
-                        item.goodsCount = 0;
-                        return item;
-                    }),
-                    'name'
-                );
             }
-            this.list = storeMap[storeId];
+            this.list = storeMap[storeId] || [];
         }
     }
 };
