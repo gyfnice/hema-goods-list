@@ -19,26 +19,7 @@
                 >
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template #title>
-                        <span class="custom-title">
-                            {{ item?.text }}
-                            <span>|</span>
-                            <span>
-                                <van-tag color="#ffe1e1" text-color="#ad0000">
-                                    {{
-                                        item?.piecewiseAgentFee?.description ||
-                                        `配送费: ${item.floatDeliveryFee}元`
-                                    }}
-                                </van-tag>
-                            </span>
-                        </span>
-                        <van-space fill>
-                            <van-tag
-                                type="primary"
-                                v-for="(tag, index) in item.descs"
-                                :key="tag?.text"
-                                >{{ tag?.text }}</van-tag
-                            >
-                        </van-space>
+                        <StoreNameBar :item="item || {}" />
                     </template>
                 </van-cell>
             </van-list>
@@ -104,6 +85,7 @@ import { showToast } from 'vant';
 import { Store, groupCopywriting } from '@/utils/index.js';
 import { queryStoreListByAddress } from '@/api/index.js';
 import AddressSearch from '@/components/AddressSearch.vue';
+import StoreNameBar from '@/components/UI/StoreNameBar.vue';
 
 const store = useStore();
 const loading = ref(false);
@@ -180,6 +162,7 @@ const selectStoreId = (item) => {
 
 <style lang="less">
 .store-list-wrapper {
+    padding-bottom: 60px;
     .van-space--fill {
         display: flex;
         flex-wrap: wrap;

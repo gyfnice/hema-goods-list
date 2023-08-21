@@ -5,12 +5,13 @@ const _ = require('lodash');
 const { getCookie } = require('./auth.js');
 const { getSign } = require('./sign.js');
 
-const getSignConfig = (mockData, extendParams) => {
+const getSignConfig = (mockData, extendParams, extendHeaders = {}) => {
     const time = new Date().getTime();
     const inputData = JSON.stringify(mockData);
     const sign = getSign(inputData, time);
     const axiosConfig = {
         headers: {
+            ...extendHeaders,
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
             Cookie: getCookie() // Add your cookie value here

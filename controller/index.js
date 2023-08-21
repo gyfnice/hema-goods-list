@@ -68,8 +68,6 @@ const coreUpdateCookie = async () => {
         axiosConfig
     );
     const cookies = res.headers['set-cookie'] || [];
-    console.log('cookies :>> ', cookies);
-    console.log('latestCookieStr :>> ', latestCookieStr);
     if (cookies.length > 1) {
         latestCookieStr = replaceCookies(cookies, latestCookieStr);
         await updateCookie(latestCookieStr);
@@ -130,31 +128,114 @@ const queryChannelStore = async ({ longitude, latitude, offset }) => {
     });
     return queue;
 };
+const queryChannelStoreV2 = async ({ longitude, latitude, offset }) => {
+    const mockData = {
+        sceneCode: 'ELEME_RETAIL_SUPERMARKET_H5',
+        pageParams: JSON.stringify({
+            channel: 'supermarket',
+            bizChannel: 'mobile.default.default'
+            // cityId: 3,
+            // mockDeviceId: '6AC390B27256480698D3540A7260BB2D|1688005162463'
+        }),
+        latitude,
+        longitude,
+        eventAction: 'refresh',
+        componentCode: 'retail_supermarket_h5_tab',
+        isAppletReq: true,
+        bizInfos: JSON.stringify({
+            isAppletReq: true,
+            limit: 10,
+            offset,
+            //rankId: 'wx4g49b6AC390B27256480698D3540A7260BB2D|1688005162463_1aa8441f5ce6bed7b6f4da3554f9ea2c169258965',
+            scheduleId: '0',
+            tabId: '0',
+            titleName: '附近商家',
+            customizeAppVersion: '10.6.0',
+            searchTotal: false,
+            sortBy: 'INTELLIGENCE',
+            bizCode: 'retail_shoplist_container',
+            orderChannel: '22',
+            orderSubChannel: 'ELE_APP',
+            sourcePage: 'supermarket',
+            recommendExtInfo: '{}',
+            isWeex: false,
+            isH5: true,
+            isInnerPage: false
+        }),
+        bizChannel: 'mobile.default.default',
+        // deviceId: '6AC390B27256480698D3540A7260BB2D|1688005162463',
+        lat: latitude,
+        lng: longitude
+    };
+    const axiosConfig = getSignConfig(
+        mockData,
+        {
+            api: 'mtop.alsc.eleme.newretail.channelv1.collection',
+            timeout: 10000,
+            ttid: '201200@eleme_android_10.4.0'
+        },
+        {
+            'x-ele-ua':
+                'Rajax/1 Android/99 Eleme/10.9.0 ID/6AC390B27256480698D3540A7260BB2D|122692602189245 pkgProdVersion/10.4.0'
+            // 'x-ele-check': 'xxxxxxx'
+        }
+    );
+    const res = await axios.get(
+        'https://waimai-guide.ele.me/h5/mtop.alsc.eleme.newretail.channelv1.collection/1.0/5.0/',
+        axiosConfig
+    );
+    const queue = [];
+    const list = res.data?.data?.data?.retail_shoplist?.fields?.items || [];
+    console.log('offset :>> ', offset, list.length);
+    if (list.length === 0) {
+        console.log(
+            'res.data?.data?.data?.retail_shoplist :>> ',
+            offset,
+            res.data?.data?.data?.retail_shoplist
+        );
+    }
+    _.map(list, (item) => {
+        const info = item?.fields || {};
+        queue.push(info);
+    });
+    return queue;
+};
 const queryAllTaskStore = async (params) => {
     const curInfo = await fetchLatLngByKeword(params);
-    const sendTask = new Array(15);
+    const sendTask = new Array(20);
     const queue = [];
     const resList = await Promise.allSettled(
         _.map(sendTask, (kwKey, index) => {
             const offset = 0 + index * 10;
-            return queryChannelStore({ ...curInfo, offset });
+            // return queryChannelStore({ ...curInfo, offset });
+            return queryChannelStoreV2({ ...curInfo, offset });
         })
     );
-    _.map(resList, (item) => {
+    /* _.map(resList, (item) => {
         _.map(item.value, (info) => {
+            console.log('info :>> ', info);
             if (info?.scheme?.indexOf('store_id') > -1) {
                 info.text = info.name;
                 info.descs = info.shopTags.concat(info.supportTags);
                 queue.push(info);
             }
         });
+    }); */
+    _.map(resList, (item) => {
+        _.map(item.value, (info) => {
+            info.scheme = info?.schema?.storeSchema;
+            info.text = info.name;
+            info.descs = _.uniqBy(
+                (info?.tag?.detail || []).concat(info?.tag?.summary || []),
+                'msg'
+            );
+            if (info?.schema?.storeSchema) {
+                queue.push(info);
+            }
+        });
     });
-    const sortList = _.sortBy(_.uniqBy(queue, 'storeId'), [
-        function (food) {
-            return food.recentOrderNum || 0;
-        }
-    ]);
-    return _.reverse(sortList);
+    const sortList = _.uniqBy(queue, 'storeId');
+    return sortList;
 };
 const queryGoodsByStore = async ({ storeId, keyword }) => {
     const mockData = {
@@ -193,16 +274,27 @@ const queryRelativeGoods = async (params) => {
     const list = await queryAllTaskStore(params);
     const resList = await Promise.allSettled(
         _.map(list, (item, index) => {
-            console.log('item.storeId :>> ', item.storeId);
             return queryGoodsByStore({
                 storeId: item.storeId,
                 keyword: params.goodsKeyword
             });
         })
     );
+    const storeMap = _.keyBy(list, 'storeId');
     _.map(resList, (item) => {
         _.map(item.value, (info) => {
-            queue.push(info);
+            const storeInfo = storeMap[info.storeId];
+            console.log('storeInfo :>> ', storeInfo);
+            queue.push({
+                deliveryActivity: storeInfo.deliveryActivity,
+                descs: _.uniqBy(
+                    (storeInfo?.tag?.detail || []).concat(
+                        storeInfo?.tag?.summary || []
+                    ),
+                    'msg'
+                ),
+                ...info
+            });
         });
     });
     return queue;

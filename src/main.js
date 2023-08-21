@@ -43,6 +43,7 @@ import _ from 'lodash';
 import 'vant/lib/index.css';
 
 import { recordCollectStore } from '@/api/index.js';
+import '@/utils/x_check.js';
 
 import router from './router/index.js';
 import App from './App.vue';

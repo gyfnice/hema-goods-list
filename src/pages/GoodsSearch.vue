@@ -51,12 +51,11 @@
             :name="index"
         >
             <template #title>
-                <van-space fill>
-                    <span>{{ groupItem.text }}</span>
+                <StoreNameBar :item="groupItem || {}">
                     <van-tag plain type="primary">{{
                         groupItem.priceSortWeight.toFixed(2)
                     }}</van-tag>
-                </van-space>
+                </StoreNameBar>
             </template>
             <List
                 :loading="false"
@@ -120,6 +119,8 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
 import AddressSearch from '@/components/AddressSearch.vue';
+import StoreNameBar from '@/components/UI/StoreNameBar.vue';
+
 import List from '@/components/List.vue';
 import { cityMapInfo } from '@/config/city.js';
 import { queryGoodsByStore } from '@/api/index.js';
@@ -196,12 +197,15 @@ const groupItems = computed(() => {
         item.scoreWeight = scoreSort(item);
         return item.storeName;
     });
+    console.log('group :>> ', group);
     const list = _.keys(group).map((storeName) => {
         const curList = goodsList.value.filter(
             (item) => item.storeName == storeName
         );
         return {
             text: storeName,
+            deliveryActivity: curList[0].deliveryActivity,
+            descs: curList[0].descs,
             priceSortWeight: curList.reduce((pre, val) => {
                 return pre + scoreSort(val);
             }, 0)
