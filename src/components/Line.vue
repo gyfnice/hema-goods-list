@@ -48,7 +48,9 @@ export default {
                 item.day = dayjs(item.timestamp).format('MM-DD');
                 return item;
             });
-            return _.uniqBy(list, 'day');
+            return _.uniqBy(list, 'day').sort(function (a, b) {
+                return new Date(a.day) - new Date(b.day);
+            });
         },
         saleChartData() {
             return {

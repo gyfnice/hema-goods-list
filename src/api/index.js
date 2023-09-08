@@ -2,7 +2,8 @@ import axios from 'axios';
 import storeTime from '@/utils/localTime.js';
 import { Store } from '@/utils/index.js';
 
-// import { goodsList } from '@/mockData/goodsList.js';
+// import { goodsList, storeGoodsList } from '@/mockData/goodsList.js';
+
 const mapList = {};
 const mockResonse = (data) => {
     return new Promise((resolve, reject) => {
@@ -51,6 +52,7 @@ export const updateAuthCookie = (params) => {
     });
 };
 export const queryGoodsByStore = (params) => {
+    // return mockResonse(storeGoodsList);
     return axios.get(`/api/hema/queryStoreInGoods`, {
         params
     });

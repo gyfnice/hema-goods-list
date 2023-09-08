@@ -167,7 +167,6 @@ const hidePane = () => {
     searchGoods(keyword.value);
 };
 const sortList = (list) => {
-    console.log('list :>> ', list);
     return _.reverse(
         _.sortBy(list, [
             function (food) {

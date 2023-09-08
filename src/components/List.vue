@@ -112,13 +112,11 @@ const displayLineChart = async (item) => {
 const selectCard = (item) => {
     store.commit('select_photo', item);
 };
-const goShopStore = ({ storeId, storeName }) => {
+const goShopStore = (item) => {
+    item.text = item.storeName;
+    store.commit('select_store_id', item);
     router.push({
-        name: 'List',
-        query: {
-            storeId,
-            storeName
-        }
+        name: 'List'
     });
 };
 const stepperChange = (item) => {

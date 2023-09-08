@@ -1,6 +1,6 @@
 <template>
     <div class="list-wrapper">
-        <van-nav-bar :title="currentStoreItem?.text">
+        <van-nav-bar :title="currentStoreItem?.text || currentStoreItem?.name">
             <template #left>
                 <van-space>
                     <van-icon
@@ -51,6 +51,25 @@
                             v-model="foodsKeyword"
                             placeholder="请输入搜索关键词"
                         />
+                        <van-space
+                            fill
+                            style="
+                                justify-content: flex-end;
+                                padding: 10px;
+                                padding-top: 0;
+                            "
+                        >
+                            <van-tag
+                                color="#fff"
+                                :text-color="
+                                    item.active ? '#1989fa' : '#969799'
+                                "
+                                @click="tagSortClick(item)"
+                                :key="item"
+                                v-for="item in sortTags"
+                                >{{ item.name }}</van-tag
+                            >
+                        </van-space>
                     </div>
                 </van-sticky>
                 <List :loading="loading" :list="filterCouponList" />
@@ -99,6 +118,18 @@ export default {
     data() {
         return {
             hotTags: ['奶', '酒', '猪', '鱼', '虾', '蛋', '鸡', '乳'],
+            sortTags: [
+                {
+                    name: '销量',
+                    sortKey: 'monthSell',
+                    active: false
+                },
+                {
+                    name: '库存',
+                    sortKey: 'realLeftNum',
+                    active: false
+                }
+            ],
             list: [],
             collectList: Store('historyList') || [],
             foodsKeyword: '',
@@ -116,6 +147,15 @@ export default {
             return _.find(this.collectStoreList, (item) => {
                 return item.storeId == Number(this.currentStoreId);
             });
+        },
+        currentSort() {
+            let sort = '';
+            this.sortTags.forEach((item) => {
+                if (item.active) {
+                    sort = item.sortKey;
+                }
+            });
+            return sort;
         },
         collectStoreList() {
             const list = this.collectList
@@ -217,6 +257,20 @@ export default {
                 return '无优惠' === curTab;
             });
             console.log('fList :>> ', fList);
+            console.log('this.currentSort :>> ', this.currentSort);
+            if (this.currentSort) {
+                return _.sortBy(fList, [
+                    (food) => {
+                        return (
+                            Number(
+                                String(food[this.currentSort]).match(
+                                    /\d+/
+                                )?.[0] || 0
+                            ) * (this.currentSort === 'monthSell' ? -1 : 1)
+                        );
+                    }
+                ]);
+            }
             return fList;
         }
     },
@@ -276,6 +330,14 @@ export default {
         },
         tagClick(tag) {
             this.foodsKeyword = tag;
+        },
+        tagSortClick(targetItem) {
+            this.sortTags.forEach((item) => {
+                if (item.name != targetItem.name) {
+                    item.active = false;
+                }
+            });
+            targetItem.active = !targetItem.active;
         },
         selectCity() {
             this.$router.push({
@@ -342,7 +404,7 @@ body #app .van-action-sheet {
     padding-bottom: 80px;
 }
 .list-wrapper .van-submit-bar {
-    z-index: 3000;
+    z-index: 1000;
     bottom: 50px;
 }
 .my-swipe {
