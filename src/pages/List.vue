@@ -256,11 +256,16 @@ export default {
             });
         },
         maxPrice() {
+            console.log(
+                'max-this.filterCouponList :>> ',
+                this.filterCouponList
+            );
             const max = Number(
                 _.maxBy(this.filterCouponList, function (o) {
-                    return o.currentPrice;
+                    return Number(o.currentPrice || 0);
                 })?.currentPrice || 0
             );
+            console.log('max :>> ', max);
             return Math.ceil(max);
         },
         rangePriceList() {
