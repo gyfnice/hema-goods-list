@@ -4,6 +4,7 @@ import {
     Area,
     Search,
     Button,
+    Slider,
     Badge,
     Tabbar,
     TabbarItem,
@@ -66,6 +67,7 @@ app.use(store)
     .use(Loading)
     .use(Badge)
     .use(Button)
+    .use(Slider)
     .use(Tabbar)
     .use(TabbarItem)
     .use(Collapse)

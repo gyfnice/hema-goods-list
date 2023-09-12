@@ -51,6 +51,24 @@
                             v-model="foodsKeyword"
                             placeholder="请输入搜索关键词"
                         />
+                        <van-slider
+                            v-if="currentSort === 'currentPrice'"
+                            class="slider-price-wrapper"
+                            v-model="rangePrice"
+                            :max="maxPrice"
+                            range
+                        >
+                            <template #left-button>
+                                <div class="custom-button">
+                                    {{ rangePrice[0] }}
+                                </div>
+                            </template>
+                            <template #right-button>
+                                <div class="custom-button">
+                                    {{ rangePrice[1] }}
+                                </div>
+                            </template>
+                        </van-slider>
                         <van-space
                             fill
                             style="
@@ -72,7 +90,12 @@
                         </van-space>
                     </div>
                 </van-sticky>
-                <List :loading="loading" :list="filterCouponList" />
+                <List
+                    :loading="loading"
+                    v-if="currentSort !== 'currentPrice'"
+                    :list="filterCouponList"
+                />
+                <List :loading="loading" v-else :list="rangePriceList" />
             </template>
         </van-tree-select>
         <van-submit-bar
@@ -120,6 +143,11 @@ export default {
             hotTags: ['奶', '酒', '猪', '鱼', '虾', '蛋', '鸡', '乳'],
             sortTags: [
                 {
+                    name: '价格',
+                    sortKey: 'currentPrice',
+                    active: false
+                },
+                {
                     name: '销量',
                     sortKey: 'monthSell',
                     active: false
@@ -130,6 +158,7 @@ export default {
                     active: false
                 }
             ],
+            rangePrice: [0, 0],
             list: [],
             collectList: Store('historyList') || [],
             foodsKeyword: '',
@@ -226,6 +255,40 @@ export default {
                 return item.goodsCount > 0;
             });
         },
+        maxPrice() {
+            const max = Number(
+                _.maxBy(this.filterCouponList, function (o) {
+                    return o.currentPrice;
+                })?.currentPrice || 0
+            );
+            return Math.ceil(max);
+        },
+        rangePriceList() {
+            function filterItemsByPriceRange(items, priceRange) {
+                // Ensure priceRange is a valid array with two elements
+                if (!Array.isArray(priceRange) || priceRange.length !== 2) {
+                    throw new Error(
+                        'Price range must be an array with two elements: [minPrice, maxPrice]'
+                    );
+                }
+
+                const [minPrice, maxPrice] = priceRange;
+
+                // Use Array.filter to filter items within the specified price range
+                const filteredItems = items.filter((item) => {
+                    const itemPrice = parseFloat(item.currentPrice);
+
+                    // Check if the item's price is within the specified range
+                    return itemPrice >= minPrice && itemPrice <= maxPrice;
+                });
+
+                return filteredItems;
+            }
+            return filterItemsByPriceRange(
+                this.filterCouponList,
+                this.rangePrice
+            );
+        },
         filterCouponList() {
             const fList = _.filter(this.list, (item) => {
                 const curTab = this.items[this.activeIndex].text;
@@ -256,10 +319,8 @@ export default {
                 }
                 return '无优惠' === curTab;
             });
-            console.log('fList :>> ', fList);
-            console.log('this.currentSort :>> ', this.currentSort);
             if (this.currentSort) {
-                return _.sortBy(fList, [
+                const resList = _.sortBy(fList, [
                     (food) => {
                         return (
                             Number(
@@ -270,6 +331,7 @@ export default {
                         );
                     }
                 ]);
+                return resList;
             }
             return fList;
         }
@@ -337,7 +399,9 @@ export default {
                     item.active = false;
                 }
             });
+            this.rangePrice = [0, 99999999];
             targetItem.active = !targetItem.active;
+            this.rangePrice[1] = this.maxPrice;
         },
         selectCity() {
             this.$router.push({
@@ -397,6 +461,22 @@ body #app .list-wrapper .van-overlay {
 }
 body #app .van-action-sheet {
     z-index: 12002 !important;
+}
+.slider-price-wrapper {
+    margin-bottom: 12px;
+    margin-top: 6px;
+    box-sizing: border-box;
+    width: 85%;
+    margin-left: 12px;
+}
+.custom-button {
+    width: 26px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: center;
+    background-color: var(--van-primary-color);
+    border-radius: 100px;
 }
 </style>
 <style scoped>
