@@ -65,6 +65,7 @@ export const getGoodsListByServer = (params) => {
 };
 
 export const queryStoreListByAddress = (params) => {
+    // return mockResonse(storeGoodsList);
     const { lat, keyword } = params;
     const nameSpace = `${lat}_${keyword}`;
     const curList = mapList[nameSpace];

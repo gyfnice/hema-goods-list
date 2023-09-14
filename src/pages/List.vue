@@ -116,12 +116,30 @@
     </div>
     <van-action-sheet
         v-model:show="switchVisible"
-        :actions="collectStoreList"
-        @select="onSelect"
         cancel-text="取消"
         description="选择收藏的门店"
         close-on-click-action
-    />
+    >
+        <van-tree-select
+            v-model:main-active-index="collectIndex"
+            height="90vh"
+            :items="collectGroupStoreList"
+        >
+            <template #content>
+                <van-list>
+                    <van-cell
+                        center
+                        @click="onSelect(item)"
+                        is-link
+                        v-for="item in collectCellStoreList"
+                        :key="item"
+                        :title="item.text"
+                    >
+                    </van-cell>
+                </van-list>
+            </template>
+        </van-tree-select>
+    </van-action-sheet>
 </template>
 
 <script>
@@ -163,6 +181,7 @@ export default {
             collectList: Store('historyList') || [],
             foodsKeyword: '',
             activeIndex: 0,
+            collectIndex: 0,
             show: false,
             switchVisible: false,
             loading: false,
@@ -175,6 +194,25 @@ export default {
         isCollectStore() {
             return _.find(this.collectStoreList, (item) => {
                 return item.storeId == Number(this.currentStoreId);
+            });
+        },
+        collectCellStoreList() {
+            const name = this.collectGroupStoreList[this.collectIndex].text;
+            return this.collectStoreList.filter(
+                (item) => item.text.indexOf(name) > -1
+            );
+        },
+        collectGroupStoreList() {
+            const group = groupCopywriting(
+                this.collectStoreList.map((item) => item.text)
+            );
+            return _.keys(group).map((item) => {
+                return {
+                    text: item,
+                    children: group[item].map((name) => {
+                        text: name;
+                    })
+                };
             });
         },
         currentSort() {
@@ -256,16 +294,11 @@ export default {
             });
         },
         maxPrice() {
-            console.log(
-                'max-this.filterCouponList :>> ',
-                this.filterCouponList
-            );
             const max = Number(
                 _.maxBy(this.filterCouponList, function (o) {
                     return Number(o.currentPrice || 0);
                 })?.currentPrice || 0
             );
-            console.log('max :>> ', max);
             return Math.ceil(max);
         },
         rangePriceList() {
@@ -389,6 +422,7 @@ export default {
         },
         onSelect(item) {
             this.select_store_id(item);
+            this.switchVisible = false;
             this.$router.replace({
                 name: 'List',
                 query: {}

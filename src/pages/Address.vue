@@ -9,11 +9,17 @@
     />
     <van-space direction="vertical" fill>
         <AddressSearch @handleChange="searchLocation" />
+        <van-space fill style="justify-content: end; margin-right: 12px">
+            <van-switch size="14px" v-model="isFilterFee" />
+            <span style="font-size: 12px; color: rgb(102, 102, 102)"
+                >忽略高配送费</span
+            >
+        </van-space>
         <div class="store-list-wrapper">
             <van-list :loading="loading">
                 <van-cell
                     :key="item?.text"
-                    v-for="item in list"
+                    v-for="item in addressList"
                     @click="selectStoreId(item)"
                     is-link
                 >
@@ -87,9 +93,12 @@ import { queryStoreListByAddress } from '@/api/index.js';
 import AddressSearch from '@/components/AddressSearch.vue';
 import StoreNameBar from '@/components/UI/StoreNameBar.vue';
 
+const MAX_DELIVERY_FEE = 4;
+
 const store = useStore();
 const loading = ref(false);
 const historyShow = ref(false);
+const isFilterFee = ref(false);
 const list = ref([]);
 const historyList = ref(Store('historyList') || []);
 const router = useRouter();
@@ -112,6 +121,17 @@ const searchLocation = async ({ lngInfo, kword }) => {
         loading.value = false;
     }
 };
+const addressList = computed(() => {
+    if (!isFilterFee.value) return list.value;
+    return list.value.filter((item) => {
+        const deliveryPrice =
+            item?.deliveryActivity?.deliveryMsg?.match(/配送¥(\d+)/)?.[1] || 0;
+        if (Number(deliveryPrice) > MAX_DELIVERY_FEE) {
+            return false;
+        }
+        return true;
+    });
+});
 const historyGroupStoreList = computed(() => {
     const list = _.uniqBy(historyList.value, 'text');
     const group = groupCopywriting(list.map((item) => item.text));

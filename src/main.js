@@ -28,6 +28,7 @@ import {
     NavBar,
     Cell,
     Dialog,
+    Switch,
     Sticky,
     Swipe,
     Form,
@@ -63,6 +64,7 @@ app.use(store)
     .use(FloatingPanel)
     .use(Divider)
     .use(Sticky)
+    .use(Switch)
     .use(FloatingBubble)
     .use(Loading)
     .use(Badge)

@@ -1133,6 +1133,636 @@ export const storeGoodsList = {
             upc: '6932571040045',
             url: 'https://img.alicdn.com/i2/2201058088466/O1CN011kBHZs2CPTngmSe4r_!!2201058088466-0-eleretail.jpg',
             weightFlag: 2
+        },
+        {
+            deliveryActivity: {
+                currentPrice: '3',
+                deliveryMsg: '配送¥6',
+                deliveryMsgColor: {
+                    bgColor: '',
+                    frameColor: '',
+                    frontColor: '#999999'
+                },
+                deliveryMsgRenderType: 1,
+                deliveryProductId: '8888',
+                deliveryTime: '35',
+                distance: '2037.0',
+                multipleText: {
+                    text: '35分钟送达'
+                },
+                originPrice: '7',
+                startPrice: '29',
+                text: {
+                    color: {
+                        frontColor: '#02B6FD',
+                        bgColor: '#FFFFFF',
+                        frameColor: '#9AE2FE'
+                    },
+                    text: '蓝骑士专送'
+                }
+            },
+            imagePath:
+                'https://img.alicdn.com/imgextra/i2/2201058088466/O1CN01vY9xex2CPTxm3OHwX_!!2201058088466-2-koubei.png',
+            descs: [
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#DCA05A',
+                        frontColor: '#AE6C28'
+                    },
+                    iconName: '红包',
+                    iconUrl:
+                        'https://fuss10.elemecdn.com/4/aa/13d1156ccfc7aaa7380a45dc0a5fepng.png',
+                    msg: '6元无门槛',
+                    type: '103'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '红包',
+                    msg: '红包109减20',
+                    type: '101'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '红包',
+                    msg: '红包99减15',
+                    type: '101'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '活动',
+                    msg: '品类28减8',
+                    type: '2'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '活动',
+                    msg: '品类30减5',
+                    type: '2'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '活动',
+                    msg: '品类25减3',
+                    type: '2'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '融化必赔',
+                    type: '1009'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '支持预订',
+                    type: '1006'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '支持自取',
+                    type: '1005'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '开发票',
+                    type: '1002'
+                }
+            ],
+            activityPriceList: [],
+            allSold: 0,
+            candidateFlag: false,
+            cat1Id: '201220343',
+            categoryIds: ['6101868'],
+            contentAlgoAbInfo:
+                '{"pvid":"3306fc9e-7d39-48dd-bcde-ca8fe22a8c8c","bizCode":"recommend_reason","tppBuckets":"32031#0#286127#99","contentAlgoabinfo":[{"reasonType":"ITEM_ATTR","content":"冷藏|1.6L/瓶","materialName":"retail_item_attribute","materialId":"670783501584_8373f8acd5e2dc005bffbeebbff81f71"}],"bucketId":"33955","strategyId":"0"}',
+            currentPrice: '24.9',
+            cycleBuyFlag: false,
+            defaultSaleUnit: '份',
+            dishActivity: [
+                {
+                    baiYiBuTie: false,
+                    childType: 1,
+                    detailTagText: '特价',
+                    discountLimit: 1,
+                    dishActivityId: '6000001538640635',
+                    dishActivityName: '一口价活动_itemPromSpecial',
+                    firstText: '特价',
+                    initialStock: '99999',
+                    leftNum: '99999',
+                    mutexText: '',
+                    platform: 5,
+                    preferentialText: '可叠加其它优惠',
+                    preferentialTips:
+                        '该优惠可与商品满减、全店满减、运费满减、红包叠加使用',
+                    supportUserType: 0,
+                    type: 1,
+                    userOrderItemLimit: 0
+                }
+            ],
+            drugInfo: {
+                品牌: 'Wei-Chuan/味全',
+                食用方法: '即食食品',
+                储存条件: '冷藏',
+                保质期: '21天',
+                净含量: '1.6L/瓶',
+                是否含糖: '含糖',
+                包装方式: '瓶装',
+                是否进口: '国产'
+            },
+            drugTag: 0,
+            durationDesc: '',
+            durationSaleFlag: 0,
+            eduDiscountItem: 0,
+            eleId: 155171267,
+            eleSkuId: '16479151072219585',
+            enabled: 1,
+            freshSeaGoodInfoRemoveRecommand: 0,
+            goodsDetailActivity: {
+                tag: '特价',
+                tagDetail: '该商品享受特价优惠',
+                tagList: ['特价 '],
+                tagMutex:
+                    '该优惠可与商品满减、全店满减、运费满减、红包叠加使用',
+                tagType: 1
+            },
+            hasSku: 0,
+            holdNum: '0',
+            isIced: 0,
+            isIcedItem: 0,
+            isInDuration: 1,
+            isKeepHot: 0,
+            isMakeUp: 0,
+            isMedicareTag: true,
+            isMeltPay: 0,
+            isPreSaleItem: 0,
+            isRefundForLackOfWeight: 0,
+            isRxDrug: 0,
+            isShortWarranty: 0,
+            isStartWithN: 0,
+            isSunshineFruit: 0,
+            isSupportRefund: 1,
+            itemId: '670783501584',
+            itemJumpLinkForCheckout:
+                'https://h5.ele.me/newretail/tr/checkout/?is_to_pay_skipshop=1&is_n_buy=1&is_h5=1&ish5=1&store_id=240076154&wid=&ele_id=E9855477641622276016&store_visit_id=16941381511539176&item_info=%5B%5B%22670783501584%22%2C%221%22%5D%5D&geolat=0.0&geolng=0.0&isSelfFetch=2',
+            itemProperty: {
+                category: 'retail_item_attribute',
+                context: '冷藏|1.6L/瓶',
+                contextList: ['冷藏', '1.6L/瓶'],
+                feature: {},
+                reasonType: 'ITEM_ATTR'
+            },
+            itemSpeedOrderLink:
+                'https://tb.ele.me/app/elenr/trade/efbuy?is_to_pay_skipshop=1&is_efbuy=1&is_h5=1&ish5=1&store_id=240076154&wid=&ele_id=E9855477641622276016&store_visit_id=16941381511531464&item_info=%5B%5B%22670783501584%22%2C%221%22%5D%5D&geolat=0.0&geolng=0.0&isSelfFetch=2',
+            labelList: [
+                {
+                    text: '冷藏',
+                    type: 3
+                }
+            ],
+            leftNum: '24',
+            minimum: 1,
+            monthSell: 12,
+            mutexFlag: 0,
+            nactivityType: 0,
+            name: '味全1.6L每日C橙汁',
+            originalPrice: '26.9',
+            packageFlag: 0,
+            photos: [
+                {
+                    isMaster: 1,
+                    url: 'https://img.alicdn.com/i2/2201058088466/O1CN011kBHZs2CPTngmSe4r_!!2201058088466-0-eleretail.jpg'
+                }
+            ],
+            property: {
+                品牌: 'Wei-Chuan/味全',
+                净含量: '1.6L/瓶',
+                保质期: '21天'
+            },
+            realLeftNum: '24',
+            saleStep: 1,
+            sellText: '月售12份',
+            shopItemCombineType: 0,
+            skuCatPropertyList: [
+                {
+                    propertyId: 20000,
+                    propertyText: '品牌',
+                    valueId: 31847,
+                    valueText: 'Wei-Chuan/味全'
+                },
+                {
+                    propertyId: 1989873,
+                    propertyText: '保质期',
+                    valueId: 7907541,
+                    valueText: '21天'
+                },
+                {
+                    propertyId: 147956252,
+                    propertyText: '净含量',
+                    valueId: 52157270,
+                    valueText: '1.6L/瓶'
+                },
+                {
+                    propertyId: 32371,
+                    propertyText: '食用方法',
+                    valueId: 110693,
+                    valueText: '即食食品'
+                },
+                {
+                    propertyId: 192256048,
+                    propertyText: '储存条件',
+                    valueId: 11455246,
+                    valueText: '冷藏'
+                },
+                {
+                    propertyId: 2445368,
+                    propertyText: '是否含糖',
+                    valueId: 15806717,
+                    valueText: '含糖'
+                },
+                {
+                    propertyId: 6939376,
+                    propertyText: '包装方式',
+                    valueId: 136134,
+                    valueText: '瓶装'
+                },
+                {
+                    propertyId: 10177430,
+                    propertyText: '是否进口',
+                    valueId: 29827,
+                    valueText: '国产'
+                }
+            ],
+            specificationPropertyList: [
+                {
+                    context: '冷藏'
+                },
+                {
+                    context: '1.6L/瓶'
+                }
+            ],
+            spuId: '0',
+            startWith: 1,
+            stockText: '',
+            storeId: '240076154',
+            storeName: '京客隆(甜水园店)',
+            summary: '',
+            upc: '6932571040045',
+            url: 'https://img.alicdn.com/i2/2201058088466/O1CN011kBHZs2CPTngmSe4r_!!2201058088466-0-eleretail.jpg',
+            weightFlag: 2
+        },
+        {
+            deliveryActivity: {
+                currentPrice: '3',
+                deliveryMsg: '配送¥8',
+                deliveryMsgColor: {
+                    bgColor: '',
+                    frameColor: '',
+                    frontColor: '#999999'
+                },
+                deliveryMsgRenderType: 1,
+                deliveryProductId: '8888',
+                deliveryTime: '35',
+                distance: '2037.0',
+                multipleText: {
+                    text: '35分钟送达'
+                },
+                originPrice: '7',
+                startPrice: '29',
+                text: {
+                    color: {
+                        frontColor: '#02B6FD',
+                        bgColor: '#FFFFFF',
+                        frameColor: '#9AE2FE'
+                    },
+                    text: '蓝骑士专送'
+                }
+            },
+            imagePath:
+                'https://img.alicdn.com/imgextra/i2/2201058088466/O1CN01vY9xex2CPTxm3OHwX_!!2201058088466-2-koubei.png',
+            descs: [
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#DCA05A',
+                        frontColor: '#AE6C28'
+                    },
+                    iconName: '红包',
+                    iconUrl:
+                        'https://fuss10.elemecdn.com/4/aa/13d1156ccfc7aaa7380a45dc0a5fepng.png',
+                    msg: '6元无门槛',
+                    type: '103'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '红包',
+                    msg: '红包109减20',
+                    type: '101'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '红包',
+                    msg: '红包99减15',
+                    type: '101'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '活动',
+                    msg: '品类28减8',
+                    type: '2'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '活动',
+                    msg: '品类30减5',
+                    type: '2'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#FFC9C1',
+                        frontColor: '#FF4B33'
+                    },
+                    iconName: '活动',
+                    msg: '品类25减3',
+                    type: '2'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '融化必赔',
+                    type: '1009'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '支持预订',
+                    type: '1006'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '支持自取',
+                    type: '1005'
+                },
+                {
+                    color: {
+                        bgColor: '#FFFFFF',
+                        frameColor: '#B2B2B2',
+                        frontColor: '#666666'
+                    },
+                    iconName: '服务',
+                    msg: '开发票',
+                    type: '1002'
+                }
+            ],
+            activityPriceList: [],
+            allSold: 0,
+            candidateFlag: false,
+            cat1Id: '201220343',
+            categoryIds: ['6101868'],
+            contentAlgoAbInfo:
+                '{"pvid":"3306fc9e-7d39-48dd-bcde-ca8fe22a8c8c","bizCode":"recommend_reason","tppBuckets":"32031#0#286127#99","contentAlgoabinfo":[{"reasonType":"ITEM_ATTR","content":"冷藏|1.6L/瓶","materialName":"retail_item_attribute","materialId":"670783501584_8373f8acd5e2dc005bffbeebbff81f71"}],"bucketId":"33955","strategyId":"0"}',
+            currentPrice: '24.9',
+            cycleBuyFlag: false,
+            defaultSaleUnit: '份',
+            dishActivity: [
+                {
+                    baiYiBuTie: false,
+                    childType: 1,
+                    detailTagText: '特价',
+                    discountLimit: 1,
+                    dishActivityId: '6000001538640635',
+                    dishActivityName: '一口价活动_itemPromSpecial',
+                    firstText: '特价',
+                    initialStock: '99999',
+                    leftNum: '99999',
+                    mutexText: '',
+                    platform: 5,
+                    preferentialText: '可叠加其它优惠',
+                    preferentialTips:
+                        '该优惠可与商品满减、全店满减、运费满减、红包叠加使用',
+                    supportUserType: 0,
+                    type: 1,
+                    userOrderItemLimit: 0
+                }
+            ],
+            drugInfo: {
+                品牌: 'Wei-Chuan/味全',
+                食用方法: '即食食品',
+                储存条件: '冷藏',
+                保质期: '21天',
+                净含量: '1.6L/瓶',
+                是否含糖: '含糖',
+                包装方式: '瓶装',
+                是否进口: '国产'
+            },
+            drugTag: 0,
+            durationDesc: '',
+            durationSaleFlag: 0,
+            eduDiscountItem: 0,
+            eleId: 155171267,
+            eleSkuId: '16479151072219585',
+            enabled: 1,
+            freshSeaGoodInfoRemoveRecommand: 0,
+            goodsDetailActivity: {
+                tag: '特价',
+                tagDetail: '该商品享受特价优惠',
+                tagList: ['特价 '],
+                tagMutex:
+                    '该优惠可与商品满减、全店满减、运费满减、红包叠加使用',
+                tagType: 1
+            },
+            hasSku: 0,
+            holdNum: '0',
+            isIced: 0,
+            isIcedItem: 0,
+            isInDuration: 1,
+            isKeepHot: 0,
+            isMakeUp: 0,
+            isMedicareTag: true,
+            isMeltPay: 0,
+            isPreSaleItem: 0,
+            isRefundForLackOfWeight: 0,
+            isRxDrug: 0,
+            isShortWarranty: 0,
+            isStartWithN: 0,
+            isSunshineFruit: 0,
+            isSupportRefund: 1,
+            itemId: '670783501584',
+            itemJumpLinkForCheckout:
+                'https://h5.ele.me/newretail/tr/checkout/?is_to_pay_skipshop=1&is_n_buy=1&is_h5=1&ish5=1&store_id=240076154&wid=&ele_id=E9855477641622276016&store_visit_id=16941381511539176&item_info=%5B%5B%22670783501584%22%2C%221%22%5D%5D&geolat=0.0&geolng=0.0&isSelfFetch=2',
+            itemProperty: {
+                category: 'retail_item_attribute',
+                context: '冷藏|1.6L/瓶',
+                contextList: ['冷藏', '1.6L/瓶'],
+                feature: {},
+                reasonType: 'ITEM_ATTR'
+            },
+            itemSpeedOrderLink:
+                'https://tb.ele.me/app/elenr/trade/efbuy?is_to_pay_skipshop=1&is_efbuy=1&is_h5=1&ish5=1&store_id=240076154&wid=&ele_id=E9855477641622276016&store_visit_id=16941381511531464&item_info=%5B%5B%22670783501584%22%2C%221%22%5D%5D&geolat=0.0&geolng=0.0&isSelfFetch=2',
+            labelList: [
+                {
+                    text: '冷藏',
+                    type: 3
+                }
+            ],
+            leftNum: '24',
+            minimum: 1,
+            monthSell: 12,
+            mutexFlag: 0,
+            nactivityType: 0,
+            name: '味全1.6L每日C橙汁',
+            originalPrice: '26.9',
+            packageFlag: 0,
+            photos: [
+                {
+                    isMaster: 1,
+                    url: 'https://img.alicdn.com/i2/2201058088466/O1CN011kBHZs2CPTngmSe4r_!!2201058088466-0-eleretail.jpg'
+                }
+            ],
+            property: {
+                品牌: 'Wei-Chuan/味全',
+                净含量: '1.6L/瓶',
+                保质期: '21天'
+            },
+            realLeftNum: '24',
+            saleStep: 1,
+            sellText: '月售12份',
+            shopItemCombineType: 0,
+            skuCatPropertyList: [
+                {
+                    propertyId: 20000,
+                    propertyText: '品牌',
+                    valueId: 31847,
+                    valueText: 'Wei-Chuan/味全'
+                },
+                {
+                    propertyId: 1989873,
+                    propertyText: '保质期',
+                    valueId: 7907541,
+                    valueText: '21天'
+                },
+                {
+                    propertyId: 147956252,
+                    propertyText: '净含量',
+                    valueId: 52157270,
+                    valueText: '1.6L/瓶'
+                },
+                {
+                    propertyId: 32371,
+                    propertyText: '食用方法',
+                    valueId: 110693,
+                    valueText: '即食食品'
+                },
+                {
+                    propertyId: 192256048,
+                    propertyText: '储存条件',
+                    valueId: 11455246,
+                    valueText: '冷藏'
+                },
+                {
+                    propertyId: 2445368,
+                    propertyText: '是否含糖',
+                    valueId: 15806717,
+                    valueText: '含糖'
+                },
+                {
+                    propertyId: 6939376,
+                    propertyText: '包装方式',
+                    valueId: 136134,
+                    valueText: '瓶装'
+                },
+                {
+                    propertyId: 10177430,
+                    propertyText: '是否进口',
+                    valueId: 29827,
+                    valueText: '国产'
+                }
+            ],
+            specificationPropertyList: [
+                {
+                    context: '冷藏'
+                },
+                {
+                    context: '1.6L/瓶'
+                }
+            ],
+            spuId: '0',
+            startWith: 1,
+            stockText: '',
+            storeId: '240076154',
+            storeName: '京客隆(甜水园店)',
+            summary: '',
+            upc: '6932571040045',
+            url: 'https://img.alicdn.com/i2/2201058088466/O1CN011kBHZs2CPTngmSe4r_!!2201058088466-0-eleretail.jpg',
+            weightFlag: 2
         }
     ]
 };
