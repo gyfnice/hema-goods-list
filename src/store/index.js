@@ -12,6 +12,8 @@ export const store = createStore({
     state() {
         return {
             photos: [],
+            collectAllLoading: true,
+            collectAllGoodsList: [],
             goodsSearchList: [],
             queryParams: {},
             searchAddress: Store('searchAddress') || '',
@@ -56,6 +58,10 @@ export const store = createStore({
         },
         hidePhotoModal(state) {
             state.showPhoto = false;
+        },
+        set_collect_all_goods_list(state, list) {
+            state.collectAllLoading = false;
+            state.collectAllGoodsList = list || [];
         },
         set_search_goods_list(state, list) {
             state.goodsSearchList = list || [];

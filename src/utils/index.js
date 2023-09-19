@@ -9,6 +9,17 @@ export const Store = (namespace, data) => {
     }
     return null;
 };
+export const stringToColor = (inputString) => {
+    // Generate a hash code for the input string
+    let hashCode = 0;
+    for (let i = 0; i < inputString.length; i++) {
+        hashCode = (hashCode << 5) - hashCode + inputString.charCodeAt(i);
+    }
+
+    // Convert the hash code to a hexadecimal color code
+    const colorCode = '#' + ((hashCode & 0x00ffffff) | 0x800000).toString(16);
+    return colorCode;
+};
 export const groupCopywriting = (list) => {
     const groupedObj = {};
     let copywritingArr = list.filter((item) => item);

@@ -175,7 +175,10 @@ const selectStoreId = (item) => {
     }
     store.commit('select_store_id', item);
     router.push({
-        name: 'List'
+        name: 'List',
+        query: {
+            isShop: 1
+        }
     });
 };
 </script>

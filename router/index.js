@@ -1,5 +1,7 @@
 const koa_router = require('koa-router');
 const router = koa_router();
+const _ = require('lodash');
+
 const {
     queryChannelStore,
     queryAllTaskStore,
@@ -35,17 +37,27 @@ router.get('/api/hema/recordCollectStore', async (context) => {
     const handleStore = async (storeId) => {
         const list = await run(storeId);
         await recordPriceByStoreId({ goodsData: list || [], storeId });
+        return list?.slice(0, 30);
     };
     try {
-        await Promise.allSettled(
+        const rankList = await Promise.allSettled(
             storeIds.map((storeId) => {
                 return handleStore(storeId);
             })
         );
-        context.response.body = {
-            state: 200
+        const allGoods = [];
+        _.map(rankList, (item) => {
+            _.map(item.value, (info) => {
+                allGoods.push(info);
+            });
+        });
+        const body = {
+            state: 200,
+            allGoods
         };
+        context.response.body = body;
     } catch (res) {
+        console.log('res :>> ', res);
         context.response.body = {
             state: 500
         };

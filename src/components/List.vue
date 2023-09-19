@@ -47,17 +47,26 @@
                         button-size="22"
                         disable-input
                     />
-                    <van-button
-                        v-if="hasShopName && !hasCartCompare"
-                        @click="goShopStore(item)"
-                        size="small"
-                        plain
-                        type="primary"
-                        >点击去门店购买</van-button
-                    >
-                    <van-tag v-if="hasCartCompare" plain type="primary">{{
-                        item.storeName
-                    }}</van-tag>
+                    <van-space direction="vertical">
+                        <van-tag
+                            :color="stringToColor(item.storeName)"
+                            v-if="hasCartCompare"
+                            plain
+                            type="primary"
+                            >{{ item.storeName }}</van-tag
+                        >
+                        <van-tag
+                            v-if="
+                                (hasShopName && !hasCartCompare) ||
+                                isCollectMode
+                            "
+                            @click="goShopStore(item)"
+                            size="small"
+                            plain
+                            type="primary"
+                            >去门店购买</van-tag
+                        >
+                    </van-space>
                 </van-space>
             </template>
         </van-card>
@@ -70,12 +79,15 @@ import { useStore } from 'vuex';
 // import { useFuse } from '@vueuse/integrations/useFuse';
 import { useRouter } from 'vue-router';
 
+import { stringToColor } from '@/utils/index.js';
+
 const router = useRouter();
 const props = defineProps({
     list: Array,
     loading: Boolean,
     hasShopName: Boolean,
     hasCartCompare: Boolean,
+    isCollectMode: Boolean,
     isFuzzy: String,
     isGoodsCart: Boolean
 });
@@ -116,7 +128,10 @@ const goShopStore = (item) => {
     item.text = item.storeName;
     store.commit('select_store_id', item);
     router.push({
-        name: 'List'
+        name: 'List',
+        query: {
+            isShop: 1
+        }
     });
 };
 const stepperChange = (item) => {

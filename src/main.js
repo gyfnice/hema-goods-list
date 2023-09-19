@@ -54,7 +54,9 @@ import { store } from './store/index.js';
 import './reset.css';
 import './style.css';
 
-recordCollectStore();
+recordCollectStore().then((list) => {
+    store.commit('set_collect_all_goods_list', list);
+});
 
 const app = createApp(App);
 window._ = _;

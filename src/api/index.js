@@ -21,24 +21,23 @@ export const recordCollectStore = async () => {
         .map((item) => {
             return item.storeId;
         });
-    if (
-        storeIds.length > 0 &&
-        storeTime.get('recordStoreId').value !== 'hasRecordToday'
-    ) {
+    if (storeIds.length > 0 && !storeTime.get('recordStoreId').value) {
         const res = await axios.get(`/api/hema/recordCollectStore`, {
             params: {
                 storeIds: storeIds.join(',')
             }
         });
-        console.log('res :>> ', res);
         if (res.data.state === 200) {
             storeTime.set(
                 'recordStoreId',
-                'hasRecordToday',
+                JSON.stringify(res.data.allGoods),
                 Date.now() + 43200000
             );
+            return res.data.allGoods;
         }
+        return [];
     }
+    return JSON.parse(storeTime.get('recordStoreId').value || '[]');
 };
 export const queryGoodsPriceHistory = (params) => {
     return axios.get(`/api/hema/queryGoodsPriceHistory`, {
