@@ -2,16 +2,26 @@
     <van-list :loading="loading">
         <van-card
             @click-thumb="selectCard(item)"
-            v-for="item in list"
+            v-for="(item, index) in list"
             :key="item"
             :num="item.realLeftNum"
             :tag="item?.couponTag?.actDesc || ''"
             :origin-price="item.originalPrice"
             :price="`${item.currentPrice}`"
-            :desc="`${item.sellText}`"
             :title="item.name"
             :thumb="item?.photos?.[0]?.url || ''"
         >
+            <template #desc>
+                <van-space>
+                    <span>{{ item.sellText }}</span>
+                    <van-tag>排名:{{ index + 1 }}</van-tag>
+                    <van-tag v-if="isCollectMode" plain
+                        >分数:{{
+                            Number(item.priceSortWeight).toFixed(2) || 0
+                        }}</van-tag
+                    >
+                </van-space>
+            </template>
             <template #footer>
                 <van-space>
                     <div class="check-goods-wrapper" v-if="isGoodsCart">
@@ -49,6 +59,7 @@
                     />
                     <van-space direction="vertical">
                         <van-tag
+                            :text-color="stringToColor(item.storeName)"
                             :color="stringToColor(item.storeName)"
                             v-if="hasCartCompare"
                             plain

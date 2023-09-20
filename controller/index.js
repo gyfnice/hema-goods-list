@@ -186,7 +186,6 @@ const queryChannelStoreV2 = async ({ longitude, latitude, offset }) => {
     );
     const queue = [];
     const list = res.data?.data?.data?.retail_shoplist?.fields?.items || [];
-    console.log('offset :>> ', offset, list.length);
     if (list.length === 0) {
         console.log(
             'res.data?.data?.data?.retail_shoplist :>> ',

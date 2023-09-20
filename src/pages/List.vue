@@ -20,7 +20,11 @@
             </template>
             <template #right>
                 <van-space fill>
-                    <van-icon @click="shareStore" name="share-o" />
+                    <van-icon
+                        v-if="!isCollectMode"
+                        @click="shareStore"
+                        name="share-o"
+                    />
                     <van-icon
                         v-if="collectStoreList.length > 0"
                         @click="switchStore"
@@ -112,13 +116,70 @@
                 />
             </template>
         </van-tree-select>
-        <div v-else>
+        <div class="collect-mode-list" v-else>
+            <van-sticky :offset-top="40">
+                <div class="nav-search-wrapper">
+                    <van-space fill>
+                        <van-tag
+                            @click="tagClick(item)"
+                            plain
+                            type="primary"
+                            :key="item"
+                            v-for="item in hotTags"
+                            >{{ item }}</van-tag
+                        >
+                    </van-space>
+                    <van-search
+                        v-model="foodsKeyword"
+                        placeholder="请输入搜索关键词"
+                    />
+                    <van-slider
+                        v-if="currentSort === 'currentPrice'"
+                        class="slider-price-wrapper"
+                        v-model="rangePrice"
+                        :max="maxPrice"
+                        range
+                    >
+                        <template #left-button>
+                            <div class="custom-button">
+                                {{ rangePrice[0] }}
+                            </div>
+                        </template>
+                        <template #right-button>
+                            <div class="custom-button">
+                                {{ rangePrice[1] }}
+                            </div>
+                        </template>
+                    </van-slider>
+                    <van-space
+                        fill
+                        style="
+                            justify-content: flex-end;
+                            padding: 10px;
+                            padding-top: 0;
+                        "
+                    >
+                        <van-tag
+                            color="#fff"
+                            :text-color="item.active ? '#1989fa' : '#969799'"
+                            @click="tagSortClick(item)"
+                            :key="item"
+                            v-for="item in sortTags"
+                            >{{ item.name }}</van-tag
+                        >
+                    </van-space>
+                </div>
+            </van-sticky>
             <List
                 :hasCartCompare="isCollectMode"
                 :hasShopName="isCollectMode"
                 :isCollectMode="isCollectMode"
                 :loading="collectAllLoading"
-                :list="filterCouponList"
+                :list="
+                    currentSort !== 'currentPrice'
+                        ? filterCouponList
+                        : rangePriceList
+                "
             />
         </div>
         <van-submit-bar
@@ -141,6 +202,14 @@
                     @click="backRank"
                 >
                     返回大乱斗
+                </van-button>
+                <van-button
+                    v-if="isCollectMode"
+                    size="small"
+                    type="primary"
+                    @click="backStore"
+                >
+                    返回门店
                 </van-button>
             </van-space>
         </van-submit-bar>
@@ -231,7 +300,9 @@ export default {
         ...mapGetters(['currentStoreId']),
         isCollectMode() {
             return (
-                !this.$route.query.isShop && this.collectStoreList.length > 0
+                !this.$route.query.isShop &&
+                this.collectStoreList.length > 0 &&
+                !this.$route.query.storeId
             );
         },
         isCollectStore() {
@@ -500,6 +571,14 @@ export default {
                 name: 'address'
             });
         },
+        backStore() {
+            this.$router.replace({
+                name: 'List',
+                query: {
+                    isShop: 1
+                }
+            });
+        },
         backRank() {
             this.$router.replace({
                 name: 'List',
@@ -524,10 +603,13 @@ export default {
             if (this.isCollectMode) {
                 this.list = _.reverse(
                     _.sortBy(
-                        this.collectAllGoodsList.map((item) => {
-                            item.goodsCount = 0;
-                            return item;
-                        }) || [],
+                        _.uniqBy(
+                            this.collectAllGoodsList.map((item) => {
+                                item.goodsCount = 0;
+                                return item;
+                            }) || [],
+                            'name'
+                        ),
                         [
                             function (food) {
                                 return food.priceSortWeight;
@@ -596,6 +678,11 @@ body #app .van-action-sheet {
 <style scoped>
 .list-wrapper .van-list {
     padding-bottom: 80px;
+}
+.collect-mode-list {
+    padding-bottom: 80px;
+    height: 90vh;
+    overflow: scroll;
 }
 .list-wrapper .van-submit-bar {
     z-index: 1000;

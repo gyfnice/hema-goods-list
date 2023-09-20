@@ -16,8 +16,63 @@ export const stringToColor = (inputString) => {
         hashCode = (hashCode << 5) - hashCode + inputString.charCodeAt(i);
     }
 
-    // Convert the hash code to a hexadecimal color code
-    const colorCode = '#' + ((hashCode & 0x00ffffff) | 0x800000).toString(16);
+    // Convert the hash code to a hue value within the HSL color space
+    const hue = ((hashCode % 360) + 360) % 360; // Ensure the hue is between 0 and 359
+
+    // Define a constant saturation and lightness for bright and distinguishable colors
+    const saturation = 80; // Saturation (0-100)
+    const lightness = 60; // Lightness (0-100)
+
+    // Convert the HSL values to an RGB color
+    const h = hue / 60;
+    const s = saturation / 100;
+    const l = lightness / 100;
+
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h % 2) - 1));
+    const m = l - c / 2;
+
+    let r, g, b;
+
+    if (h >= 0 && h < 1) {
+        r = c;
+        g = x;
+        b = 0;
+    } else if (h >= 1 && h < 2) {
+        r = x;
+        g = c;
+        b = 0;
+    } else if (h >= 2 && h < 3) {
+        r = 0;
+        g = c;
+        b = x;
+    } else if (h >= 3 && h < 4) {
+        r = 0;
+        g = x;
+        b = c;
+    } else if (h >= 4 && h < 5) {
+        r = x;
+        g = 0;
+        b = c;
+    } else {
+        r = c;
+        g = 0;
+        b = x;
+    }
+
+    // Convert the RGB values to hexadecimal format
+    const rHex = Math.round((r + m) * 255)
+        .toString(16)
+        .padStart(2, '0');
+    const gHex = Math.round((g + m) * 255)
+        .toString(16)
+        .padStart(2, '0');
+    const bHex = Math.round((b + m) * 255)
+        .toString(16)
+        .padStart(2, '0');
+
+    const colorCode = `#${rHex}${gHex}${bHex}`;
+
     return colorCode;
 };
 export const groupCopywriting = (list) => {

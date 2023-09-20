@@ -131,7 +131,11 @@ const scoreSort = (food) => {
     if (bonusScore < 0) {
         bonusScore = 0;
     }
-    return bonusScore + Math.sqrt(food.monthSell || 0.5);
+    let monthSell = Math.sqrt(food.monthSell || 0.5);
+    if (food?.name?.indexOf?.('德青源') > -1) {
+        monthSell = monthSell * 2 + diffPrice;
+    }
+    return bonusScore + monthSell;
 };
 async function run(storeId) {
     const testAuthRes = await getHotGoodsList({ storeId });
