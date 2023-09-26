@@ -142,9 +142,9 @@ async function run(storeId) {
     if (testAuthRes.code === 401) {
         return testAuthRes;
     }
-    const hotTask = new Array(20);
-    const bigTask = new Array(2);
-    const task = new Array(20);
+    const hotTask = new Array(30);
+    const bigTask = new Array(5);
+    const task = new Array(30);
     const hotHomeTask = _.map(hotTask, (item, index) => {
         const taskId = index + 1;
         return getHotGoodsList({
