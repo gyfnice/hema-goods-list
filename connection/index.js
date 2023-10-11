@@ -1,8 +1,8 @@
 const connectionConfig = {
     user: 'gyfnice',
-    host: 'dpg-cin6gplph6evlas96v90-a.singapore-postgres.render.com',
-    database: 'eleshop',
-    password: 'iBOpEB8bC2oDwcj2lipdlbCVvCQMSIi3',
+    host: 'dpg-ckj17e0mccbs73caljc0-a.singapore-postgres.render.com',
+    database: 'eleshop_8re9',
+    password: '2xanXdC6jjTwMZdgZgBUiihgHUlgUqYR',
     port: 5432,
     ssl: true
 };
