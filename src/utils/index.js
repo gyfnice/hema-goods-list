@@ -1,3 +1,7 @@
+export const getUrlParamValue = (paramName) => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    return urlSearchParams.get(paramName);
+};
 export const Store = (namespace, data) => {
     if (typeof data !== 'undefined' && data !== null) {
         return localStorage.setItem(namespace, JSON.stringify(data));

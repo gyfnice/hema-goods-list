@@ -8,6 +8,7 @@ const router = require('./router'); // 服务端路由，为开发接口准备
 const { setCookie } = require('./auth.js');
 const { getCookie, updateCookie } = require('@/connection/index.js');
 const { coreUpdateCookie } = require('@/controller/index.js');
+const signFunc = require('@/utils/signAes.js');
 // Expected here; serve static files from public dir
 const staticDirPath = path.join(__dirname, 'dist');
 
@@ -33,6 +34,13 @@ const runServer = async () => {
     );
     // Run Koa.js server
     server.use(async (ctx, next) => {
+        const sign = ctx.request.header.authorization;
+        if (
+            !signFunc.checkIsCorrectDate(sign) &&
+            sign !== 'gyfniceLiveForever'
+        ) {
+            return;
+        }
         const currentCookie = await getCookie();
         setCookie(currentCookie);
         console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);

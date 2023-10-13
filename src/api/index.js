@@ -1,6 +1,13 @@
 import axios from 'axios';
 import storeTime from '@/utils/localTime.js';
-import { Store } from '@/utils/index.js';
+import { cacheTimeApi } from '@/helper/index.js';
+import { Store, getUrlParamValue } from '@/utils/index.js';
+// Set default headers (e.g., for authentication)
+const sign = getUrlParamValue('sign') || Store('signSuperKey');
+if (sign) {
+    Store('signSuperKey', sign);
+}
+axios.defaults.headers.common['Authorization'] = sign;
 
 // import { goodsList, storeGoodsList } from '@/mockData/goodsList.js';
 
@@ -56,31 +63,33 @@ export const queryGoodsByStore = (params) => {
         params
     });
 };
-export const getGoodsListByServer = (params) => {
-    // return mockResonse(goodsList);
-    return axios.get(`/api/hema/goodsList`, {
-        params
+export const getGoodsListByServer = async (params) => {
+    const res = await cacheTimeApi({
+        cacheKey: `${params.storeId}-goods-list`,
+        seconds: 10 * 60,
+        callback: () => {
+            return axios.get(`/api/hema/goodsList`, {
+                params
+            });
+        }
     });
+    return res;
 };
 
-export const queryStoreListByAddress = (params) => {
+export const queryStoreListByAddress = async (params) => {
     // return mockResonse(storeGoodsList);
     const { lat, keyword } = params;
-    const nameSpace = `${lat}_${keyword}`;
-    const curList = mapList[nameSpace];
-    if (!curList) {
-        return axios
-            .get(`/api/hema/queryAddress`, {
+    const nameSpace = `${lat}_${keyword}-search`;
+    const res = await cacheTimeApi({
+        cacheKey: nameSpace,
+        seconds: 5 * 60,
+        callback: () => {
+            return axios.get(`/api/hema/queryAddress`, {
                 params
-            })
-            .then((res) => {
-                if (res.data.list.length > 0) {
-                    mapList[nameSpace] = res;
-                }
-                return res;
             });
-    }
-    return curList;
+        }
+    });
+    return res;
 };
 
 export const sendAuthCookie = (params) => {
