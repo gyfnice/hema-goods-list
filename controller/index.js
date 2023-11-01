@@ -203,7 +203,7 @@ const queryChannelStoreV2 = async ({ longitude, latitude, offset }) => {
 };
 const queryAllTaskStore = async (params) => {
     const curInfo = await fetchLatLngByKeword(params);
-    const sendTask = new Array(20);
+    const sendTask = new Array(5); // 本地max: 20
     const queue = [];
     const resList = await Promise.allSettled(
         _.map(sendTask, (kwKey, index) => {

@@ -91,10 +91,10 @@ const showCookie = async () => {
     cookieLoading.value = false;
 };
 const onSubmit = async (values) => {
-    if (!validateCookieString(values.token)) {
+    /* if (!validateCookieString(values.token)) {
         showToast('cookie格式不正确，请重新输入');
         return;
-    }
+    } */
     loading.value = true;
     await sendAuthCookie({
         authToken: values.token

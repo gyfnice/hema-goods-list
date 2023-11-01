@@ -30,5 +30,23 @@ CREATE TABLE goods_prices (
     month_sell INTEGER,
     price NUMERIC,
     goods_name VARCHAR,
-    timestamp TIMESTAMP
+    timestamp  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE games (
+   id SERIAL PRIMARY KEY,
+   date TEXT,
+   list JSON
+);
+
+CREATE TABLE sign_records (
+   id SERIAL PRIMARY KEY,
+   signkey TEXT,
+   timestamp  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE global_game_info (
+   id SERIAL PRIMARY KEY,
+   timestamp  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   queryType TEXT,
+   info JSON
 );
