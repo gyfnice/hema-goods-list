@@ -31,7 +31,7 @@ export const recordCollectStore = async () => {
     if (storeIds.length > 0 && !storeTime.get('recordStoreId').value) {
         const res = await axios.get(`/api/hema/recordCollectStore`, {
             params: {
-                storeIds: storeIds.join(',').slice(0, 10)
+                storeIds: storeIds.slice(0, 10).join(',')
             }
         });
         if (res.data.state === 200) {
