@@ -48,7 +48,7 @@ const runServer = async () => {
     });
     server.use(router.routes());
     // log request URL:
-    const PORT = 80;
+    const PORT = 3010;
     server.listen(PORT, () =>
         console.log(`Server Listening on PORT ${PORT} 🚀 ..`)
     );
