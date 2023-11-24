@@ -183,13 +183,13 @@ const selectStoreId = (item) => {
 };
 </script>
 
-<style lang="less">
+<style>
 .store-list-wrapper {
     padding-bottom: 60px;
-    .van-space--fill {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2px;
-    }
+}
+.store-list-wrapper .van-space--fill {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
 }
 </style>
