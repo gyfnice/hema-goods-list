@@ -71,6 +71,7 @@ const selectedHistoryAddress = computed(
 );
 const columns = [
     { text: '北京', value: '0' },
+    { text: '天津', value: '912' },
     { text: '上海', value: '1' },
     { text: '杭州', value: '2' },
     { text: '深圳', value: '3' },
