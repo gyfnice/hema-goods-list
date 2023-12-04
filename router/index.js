@@ -10,7 +10,8 @@ const {
     coreUpdateCookie
 } = require('@/controller/index.js');
 const { run, queryAddress, requestByLngLat } = require('@/api.js');
-const { updateCookie, getCookie } = require('@/connection/index.js');
+//const { updateCookie, getCookie } = require('@/connection/index.js');
+const { getCookieFile, setCookieFile } = require('@/auth.js');
 const {
     recordPriceByStoreId,
     fetchGoodsPriceRecord,
@@ -136,7 +137,7 @@ router.get('/api/hema/auto_query_cookie', async (context) => {
 router.get('/api/hema/setAuth', async (context) => {
     // context 上下文
     const queryParams = context.request.query;
-    await updateCookie(queryParams.authToken);
+    setCookieFile(queryParams.authToken);
     context.response.body = {
         state: 'success'
     };
@@ -144,7 +145,7 @@ router.get('/api/hema/setAuth', async (context) => {
 // 查看cookie
 router.get('/api/hema/queryToken', async (context) => {
     // context 上下文
-    const content = await getCookie();
+    const content = getCookieFile();
     context.response.body = {
         state: 'success',
         content

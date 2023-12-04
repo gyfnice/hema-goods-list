@@ -5,8 +5,8 @@ const cron = require('node-cron');
 const cors = require('@koa/cors');
 const serve = require('koa-static');
 const router = require('./router'); // 服务端路由，为开发接口准备
-const { setCookie } = require('./auth.js');
-const { getCookie, updateCookie } = require('@/connection/index.js');
+const { setCookie, getCookieFile, setCookieFile } = require('@/auth.js');
+//const { getCookie, updateCookie } = require('@/connection/index.js');
 const { coreUpdateCookie } = require('@/controller/index.js');
 const signFunc = require('@/utils/signAes.js');
 // Expected here; serve static files from public dir
@@ -41,7 +41,7 @@ const runServer = async () => {
         ) {
             return;
         }
-        const currentCookie = await getCookie();
+        const currentCookie = getCookieFile();
         setCookie(currentCookie);
         console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
         await next();

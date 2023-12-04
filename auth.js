@@ -10,18 +10,18 @@ const setCookie = (val) => {
     Cookie = val;
 };
 // File paths
-const fileCookiePath = path.join(__dirname, 'data/core.cookie');
+const fileCookiePath = path.join(__dirname, 'temp_data/core.cookie');
 
-const getCookieFile = async () => {
+const getCookieFile = () => {
     // Read file content
     const content = fs.readFileSync(fileCookiePath, {
         encoding: 'utf8'
     });
     return content;
 };
-const setCookieFile = async (val) => {
+const setCookieFile = (val) => {
     try {
-        await fs.writeFileSync(fileCookiePath, val, {
+        fs.writeFileSync(fileCookiePath, val, {
             encoding: 'utf8'
         });
     } catch (err) {
