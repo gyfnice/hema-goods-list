@@ -4,6 +4,8 @@ const Koa = require('koa');
 const cron = require('node-cron');
 const cors = require('@koa/cors');
 const serve = require('koa-static');
+const ratelimit = require('koa-ratelimit');
+
 const router = require('./router'); // 服务端路由，为开发接口准备
 const { setCookie, getCookieFile, setCookieFile } = require('@/auth.js');
 //const { getCookie, updateCookie } = require('@/connection/index.js');
@@ -16,6 +18,7 @@ const staticDirPath = path.join(__dirname, 'dist');
 const server = new Koa();
 
 const runServer = async () => {
+    const db = new Map();
     if (process.env.MODE !== 'dev') {
         await coreUpdateCookie();
     }
@@ -30,6 +33,22 @@ const runServer = async () => {
     server.use(
         cors({
             origin: '*'
+        })
+    );
+    server.use(
+        ratelimit({
+            driver: 'memory',
+            db: db,
+            duration: 60000,
+            errorMessage: 'Sometimes You Just Have to Slow Down.',
+            id: (ctx) => ctx.ip,
+            headers: {
+                remaining: 'Rate-Limit-Remaining',
+                reset: 'Rate-Limit-Reset',
+                total: 'Rate-Limit-Total'
+            },
+            max: 100,
+            disableHeader: false
         })
     );
     // Run Koa.js server
