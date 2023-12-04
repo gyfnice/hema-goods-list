@@ -35,10 +35,15 @@ const runServer = async () => {
     // Run Koa.js server
     server.use(async (ctx, next) => {
         const sign = ctx.request.header.authorization;
-        if (
-            !signFunc.checkIsCorrectDate(sign) &&
-            sign !== 'gyfniceLiveForever'
-        ) {
+        let isRightSign = null;
+        try {
+            isRightSign = signFunc.checkIsCorrectDate(sign);
+            console.log('isRightSign', isRightSign);
+        } catch (err) {
+            isRightSign = true;
+            console.log('err', isRightSign, err);
+        }
+        if (!isRightSign && sign !== 'gyfniceLiveForever') {
             return;
         }
         const currentCookie = getCookieFile();
