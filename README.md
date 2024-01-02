@@ -47,6 +47,6 @@ CREATE TABLE sign_records (
 CREATE TABLE global_game_info (
    id SERIAL PRIMARY KEY,
    timestamp  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   queryType TEXT,
+   type TEXT,
    info JSON
 );
