@@ -616,7 +616,7 @@ export default {
                             }
                         ]
                     )
-                );
+                ).filter((item) => item !== 'FAIL_SYS_USER_VALIDATE');
                 return;
             }
             const storeId = this.currentStoreId;
@@ -643,7 +643,9 @@ export default {
                     this.list = [];
                 }
             }
-            this.list = storeMap[storeId] || [];
+            this.list = (storeMap[storeId] || []).filter(
+                (item) => item !== 'FAIL_SYS_USER_VALIDATE'
+            );
         }
     }
 };
