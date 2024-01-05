@@ -604,10 +604,14 @@ export default {
                 this.list = _.reverse(
                     _.sortBy(
                         _.uniqBy(
-                            this.collectAllGoodsList.map((item) => {
-                                item.goodsCount = 0;
-                                return item;
-                            }) || [],
+                            this.collectAllGoodsList
+                                .filter(
+                                    (item) => item !== 'FAIL_SYS_USER_VALIDATE'
+                                )
+                                .map((item) => {
+                                    item.goodsCount = 0;
+                                    return item;
+                                }) || [],
                             'name'
                         ),
                         [
@@ -616,7 +620,7 @@ export default {
                             }
                         ]
                     )
-                ).filter((item) => item !== 'FAIL_SYS_USER_VALIDATE');
+                );
                 return;
             }
             const storeId = this.currentStoreId;
@@ -632,10 +636,12 @@ export default {
                         return;
                     }
                     storeMap[storeId] = _.uniqBy(
-                        (res?.data?.list || []).map((item) => {
-                            item.goodsCount = 0;
-                            return item;
-                        }),
+                        (res?.data?.list || [])
+                            .filter((item) => item !== 'FAIL_SYS_USER_VALIDATE')
+                            .map((item) => {
+                                item.goodsCount = 0;
+                                return item;
+                            }),
                         'name'
                     );
                 } catch (err) {
@@ -643,9 +649,7 @@ export default {
                     this.list = [];
                 }
             }
-            this.list = (storeMap[storeId] || []).filter(
-                (item) => item !== 'FAIL_SYS_USER_VALIDATE'
-            );
+            this.list = storeMap[storeId] || [];
         }
     }
 };

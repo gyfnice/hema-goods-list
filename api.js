@@ -67,7 +67,8 @@ async function getHotGoodsList({ storeId, pn = 1 }) {
         pn,
         rn: 20,
         deliveryType: 0,
-        scentExtend: '{"SHOW_PRIVILEGES_AND_DISCOUNTS_ACTIVITY_CARD":true}',
+        scentExtend:
+            '{"SHOW_PRIVILEGES_AND_DISCOUNTS_ACTIVITY_CARD":true, "FROM_CHANNEL":"emallv2","businessComeFrom":""}',
         channel: 22,
         subChannel: 'ELE_APP',
         bizChannel: 'mobile.default.default',
@@ -110,6 +111,7 @@ async function getGoodsList({ storeId, pn = 1, categoryIds }) {
         lat: 39.913234,
         lng: 116.477062
     };
+    console.log('list-storeId :>> ', storeId);
     const axiosConfig = getSignConfig(mockData, {
         api: 'mtop.venus.shopcategoryservice.getcategorydetail',
         ecode: '1'
@@ -138,13 +140,14 @@ const scoreSort = (food) => {
     return bonusScore + monthSell;
 };
 async function run(storeId) {
+    console.log('query-storeId :>> ', storeId);
     const testAuthRes = await getHotGoodsList({ storeId });
-    if (testAuthRes.code === 401) {
+    /* if (testAuthRes.code === 401) {
         return testAuthRes;
-    }
-    const hotTask = new Array(5); // 本地max:30
-    const bigTask = new Array(5);
-    const task = new Array(5); // 本地max:30
+    } */
+    const hotTask = new Array(1); // 本地max:30
+    const bigTask = new Array(1);
+    const task = new Array(20); // 本地max:30
     const hotHomeTask = _.map(hotTask, (item, index) => {
         const taskId = index + 1;
         return getHotGoodsList({

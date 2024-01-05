@@ -37,7 +37,7 @@ router.get('/api/hema/recordCollectStore', async (context) => {
     const storeIds = queryParams.storeIds.split(',');
     const handleStore = async (storeId) => {
         const list = await run(storeId);
-        await recordPriceByStoreId({ goodsData: list || [], storeId });
+        //await recordPriceByStoreId({ goodsData: list || [], storeId });
         return list?.slice(0, 60);
     };
     try {
@@ -81,7 +81,7 @@ router.get('/api/hema/goodsList', async (context) => {
     const queryParams = context.request.query;
     const storeId = queryParams.storeId;
     const list = await run(storeId);
-    recordPriceByStoreId({ goodsData: list || [], storeId });
+    //recordPriceByStoreId({ goodsData: list || [], storeId });
     if (list?.code === 401) {
         context.response.body = {
             state: 401,

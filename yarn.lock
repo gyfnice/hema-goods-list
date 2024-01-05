@@ -484,6 +484,11 @@ async-listener@^0.6.0:
     semver "^5.3.0"
     shimmer "^1.1.0"
 
+async-ratelimiter@^1.3.0:
+  version "1.3.13"
+  resolved "https://registry.npmmirror.com/async-ratelimiter/-/async-ratelimiter-1.3.13.tgz#51c0056752751b7664ea5d9b3cfe20b8d081538f"
+  integrity sha512-eZDuN5XrlFwJdK0xxVS03Xj+LW9DkBi34RTVUhnbHoO+jFyI8I026y6x0KeRqTKay90wzl7eUC/HuKPm0U2ZFA==
+
 async@^2.6.3, async@~2.6.1:
   version "2.6.4"
   resolved "https://registry.npmmirror.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
@@ -1289,6 +1294,15 @@ koa-convert@^2.0.0:
     co "^4.6.0"
     koa-compose "^4.1.0"
 
+koa-ratelimit@^5.0.1:
+  version "5.1.0"
+  resolved "https://registry.npmmirror.com/koa-ratelimit/-/koa-ratelimit-5.1.0.tgz#4686e10a4ffd3c0b3b9b9416d4634b706a1d4c52"
+  integrity sha512-bXz1UkF9l0PTaYfj5bDCX85NFWA1W3/miBMpZjS+BEKajNPHQaqgaMDwZMM2RdbLGTYRi+mHIOjNTUjTdWjhKA==
+  dependencies:
+    async-ratelimiter "^1.3.0"
+    debug "^4.1.1"
+    ms "^2.1.2"
+
 koa-router@^10.0.0:
   version "10.1.1"
   resolved "https://registry.npmmirror.com/koa-router/-/koa-router-10.1.1.tgz#20809f82648518b84726cd445037813cd99f17ff"
@@ -1444,7 +1458,7 @@ ms@2.1.2:
   resolved "https://registry.npmmirror.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-ms@^2.1.1:
+ms@^2.1.1, ms@^2.1.2:
   version "2.1.3"
   resolved "https://registry.npmmirror.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
@@ -1876,6 +1890,11 @@ qs@^6.5.2:
   dependencies:
     side-channel "^1.0.4"
 
+queue-microtask@^1.2.2:
+  version "1.2.3"
+  resolved "https://registry.npmmirror.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
+  integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
+
 raw-body@^2.2.0, raw-body@^2.3.3:
   version "2.5.2"
   resolved "https://registry.npmmirror.com/raw-body/-/raw-body-2.5.2.tgz#99febd83b90e08975087e8f1f9419a149366b68a"
@@ -1942,6 +1961,13 @@ rollup@^3.27.1:
   integrity sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==
   optionalDependencies:
     fsevents "~2.3.2"
+
+run-parallel-limit@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmmirror.com/run-parallel-limit/-/run-parallel-limit-1.1.0.tgz#be80e936f5768623a38a963262d6bef8ff11e7ba"
+  integrity sha512-jJA7irRNM91jaKc3Hcl1npHsFLOXOoTkPCUL1JEa1R82O2miplXXRaGdjW/KM/98YQWDhJLiSs793CnXfblJUw==
+  dependencies:
+    queue-microtask "^1.2.2"
 
 run-series@^1.1.8:
   version "1.1.9"
