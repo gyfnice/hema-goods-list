@@ -258,6 +258,7 @@ let storeMap = {};
 export default {
     created() {
         this.$store.dispatch('fetchQueryParams', this.$route.query);
+        this.$store.dispatch('initStoreList');
     },
     data() {
         return {

@@ -2,6 +2,11 @@ const async = require('async');
 const axios = require('axios');
 const _ = require('lodash');
 
+const {
+    storeDataOnRedis,
+    getDataByKey
+} = require('@/controller/fetchDataFromMemory.js');
+
 const { getCookie } = require('./auth.js');
 const { getSign } = require('./sign.js');
 
@@ -140,66 +145,9 @@ const scoreSort = (food) => {
     return bonusScore + monthSell;
 };
 async function run(storeId) {
-    console.log('query-storeId :>> ', storeId);
-    const testAuthRes = await getHotGoodsList({ storeId });
-    /* if (testAuthRes.code === 401) {
-        return testAuthRes;
-    } */
-    const hotTask = new Array(1); // 本地max:30
-    const bigTask = new Array(1);
-    const task = new Array(20); // 本地max:30
-    const hotHomeTask = _.map(hotTask, (item, index) => {
-        const taskId = index + 1;
-        return getHotGoodsList({
-            storeId,
-            pn: taskId
-        });
-    });
-    const bigCouponTask = _.map(bigTask, (item, index) => {
-        const taskId = index + 1;
-        return getGoodsList({
-            storeId,
-            pn: taskId,
-            categoryIds: '["t_b_tab"]'
-        });
-    });
-    const couponTask = _.map(task, (item, index) => {
-        const taskId = index + 1;
-        return getGoodsList({
-            storeId, // 239354227/小营店  239335304/水贝店 239342276/国贸
-            // 407216037/正大国贸  369687486/正大昌平
-            pn: taskId,
-            categoryIds: '["1"]'
-        });
-    });
-    const queue = [];
-    const res = await Promise.allSettled([
-        ...hotHomeTask,
-        ...bigCouponTask,
-        ...couponTask
-    ]);
-    _.map(res, (list) => {
-        _.map(list.value, (food) => {
-            food.priceSortWeight = scoreSort(food);
-            queue.push(food);
-        });
-    });
-    const list = _.sortBy(queue, [
-        function (food) {
-            return food.priceSortWeight;
-        }
-    ]);
-    /* _.map(list, (item) => {
-      console.log(
-        "item.name :>> ",
-        item.name,
-        `${item.currentPrice}元-原价${item.originalPrice}-月销量${
-          item.monthSell
-        }-库存${item.realLeftNum}-叠加优惠:${item?.couponTag?.actDesc || "无"}`
-      );
-    }); */
-    const goodsData = _.uniqBy(_.reverse(list), 'name');
-    return goodsData;
+    const storeIdKey = `ele_${storeId}`;
+    const list = await getDataByKey(storeIdKey);
+    return list || [];
 }
 const whiteList = ['盒马', '正大优鲜', '永辉超市', '京客隆', '物美', '超市'];
 const requestByLngLat = async ({ curInfo, kw }) => {

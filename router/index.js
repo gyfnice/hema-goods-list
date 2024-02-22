@@ -9,6 +9,10 @@ const {
     queryRelativeGoods,
     coreUpdateCookie
 } = require('@/controller/index.js');
+const {
+    storeDataOnRedis,
+    getDataByKey
+} = require('@/controller/fetchDataFromMemory.js');
 const { run, queryAddress, requestByLngLat } = require('@/api.js');
 //const { updateCookie, getCookie } = require('@/connection/index.js');
 const { getCookieFile, setCookieFile } = require('@/auth.js');
@@ -20,6 +24,37 @@ const {
 
 const mockGoodsList = require('@/data/goodsList.json');
 
+router.post('/api/hema/queryStoreFromRedis', async (context) => {
+    const queryParams = context.request.body;
+    const { type } = queryParams;
+    let info = null;
+    if (type === 'storeList') {
+        info = await getDataByKey('ele_store_list_map');
+    }
+    context.response.body = {
+        state: 1,
+        info,
+        msg: 'success'
+    };
+});
+// 获取商品售卖数量
+router.post('/api/hema/storeGoodsByStoreId', async (context) => {
+    // context 上下文
+    const queryParams = context.request.body;
+    const { storeId, type, list, storeMap } = queryParams;
+    if (type === 'storeList') {
+        console.log('type :>> ', type, storeMap);
+        //storeDataOnRedis('ele_store_list_map', storeMap);
+    } else {
+        const storeIdKey = `ele_${storeId}`;
+        console.log('queryParams.list :>> ', storeIdKey, list);
+        //storeDataOnRedis(storeIdKey, list);
+    }
+    context.response.body = {
+        state: 1,
+        msg: 'success'
+    };
+});
 // 获取商品售卖数量
 router.get('/api/hema/queryMonthSellData', async (context) => {
     // context 上下文
@@ -58,7 +93,6 @@ router.get('/api/hema/recordCollectStore', async (context) => {
         };
         context.response.body = body;
     } catch (res) {
-        console.log('res :>> ', res);
         context.response.body = {
             state: 500
         };

@@ -1,7 +1,8 @@
 import { createStore } from 'vuex';
 import { showToast } from 'vant';
 
-import { queryGoodsPriceHistory } from '@/api/index.js';
+import { queryGoodsPriceHistory, storeDataInMemory } from '@/api/index.js';
+import { storeMap } from '@/config/storeGroup.js';
 import { Store } from '@/utils/index.js';
 
 function getStoreId(url) {
@@ -80,6 +81,24 @@ export const store = createStore({
         }
     },
     actions: {
+        initStoreList({ state }) {
+            const currentStoreKey = state.queryParams.storeGroupKey || 'my';
+            const storeList = storeMap[currentStoreKey];
+            const storeKey = `ele_store_${currentStoreKey}`;
+            const historyList = storeList.map((item) => {
+                return {
+                    collected: true,
+                    storeId: item.storeId,
+                    text: item.storeName,
+                    name: item.storeName
+                };
+            });
+            storeDataInMemory({
+                type: 'storeList',
+                storeMap
+            });
+            Store('historyList', historyList);
+        },
         fetchQueryParams({ commit }, queryParams) {
             commit('SET_QUERY_PARAMS', queryParams);
         },

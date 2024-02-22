@@ -4,6 +4,7 @@ const Koa = require('koa');
 const cron = require('node-cron');
 const cors = require('@koa/cors');
 const serve = require('koa-static');
+var bodyParser = require('koa-bodyparser');
 const ratelimit = require('koa-ratelimit');
 
 const router = require('./router'); // 服务端路由，为开发接口准备
@@ -53,7 +54,7 @@ const runServer = async () => {
     );
     // Run Koa.js server
     server.use(async (ctx, next) => {
-        const sign = ctx.request.header.authorization;
+        /* const sign = ctx.request.header.authorization;
         let isRightSign = null;
         try {
             isRightSign = signFunc.checkIsCorrectDate(sign);
@@ -64,12 +65,13 @@ const runServer = async () => {
         }
         if (!isRightSign && sign !== 'gyfniceLiveForever') {
             return;
-        }
+        } */
         const currentCookie = getCookieFile();
         setCookie(currentCookie);
         console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
         await next();
     });
+    server.use(bodyParser());
     server.use(router.routes());
     // log request URL:
     const PORT = 3010;

@@ -21,7 +21,15 @@ const mockResonse = (data) => {
         }, 600);
     });
 };
-
+export const storeDataInMemory = (data) => {
+    fetch('/api/hema/storeGoodsByStoreId', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+};
 export const recordCollectStore = async () => {
     const storeIds = (Store('historyList') || [])
         .filter((item) => item.collected)
