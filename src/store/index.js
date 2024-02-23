@@ -1,7 +1,11 @@
 import { createStore } from 'vuex';
 import { showToast } from 'vant';
 
-import { queryGoodsPriceHistory, storeDataInMemory } from '@/api/index.js';
+import {
+    queryGoodsPriceHistory,
+    storeDataInMemory,
+    recordCollectStore
+} from '@/api/index.js';
 import { storeMap } from '@/config/storeGroup.js';
 import { Store } from '@/utils/index.js';
 
@@ -98,6 +102,10 @@ export const store = createStore({
                 storeMap
             });
             Store('historyList', historyList);
+            recordCollectStore().then((list) => {
+                state.collectAllLoading = false;
+                state.collectAllGoodsList = list || [];
+            });
         },
         fetchQueryParams({ commit }, queryParams) {
             commit('SET_QUERY_PARAMS', queryParams);

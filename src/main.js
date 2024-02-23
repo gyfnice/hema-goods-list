@@ -44,7 +44,6 @@ import {
 import _ from 'lodash';
 import 'vant/lib/index.css';
 
-import { recordCollectStore } from '@/api/index.js';
 import '@/utils/x_check.js';
 
 import router from './router/index.js';
@@ -53,10 +52,6 @@ import { store } from './store/index.js';
 
 import './reset.css';
 import './style.css';
-
-recordCollectStore().then((list) => {
-    store.commit('set_collect_all_goods_list', list);
-});
 
 const app = createApp(App);
 window._ = _;

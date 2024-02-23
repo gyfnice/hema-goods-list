@@ -44,11 +44,11 @@ router.post('/api/hema/storeGoodsByStoreId', async (context) => {
     const { storeId, type, list, storeMap } = queryParams;
     if (type === 'storeList') {
         console.log('type :>> ', type, storeMap);
-        //storeDataOnRedis('ele_store_list_map', storeMap);
+        storeDataOnRedis('ele_store_list_map', storeMap);
     } else {
         const storeIdKey = `ele_${storeId}`;
         console.log('queryParams.list :>> ', storeIdKey, list);
-        //storeDataOnRedis(storeIdKey, list);
+        storeDataOnRedis(storeIdKey, list);
     }
     context.response.body = {
         state: 1,

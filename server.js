@@ -71,7 +71,11 @@ const runServer = async () => {
         console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
         await next();
     });
-    server.use(bodyParser());
+    server.use(
+        bodyParser({
+            jsonLimit: '30mb'
+        })
+    );
     server.use(router.routes());
     // log request URL:
     const PORT = 3010;
