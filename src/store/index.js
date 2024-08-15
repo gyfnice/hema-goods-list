@@ -73,7 +73,7 @@ export const store = createStore({
         },
         select_photo(state, item) {
             state.currentGoodsItem = item;
-            state.photos = item.photos;
+            state.photos = item.imageList;
             state.showPhoto = true;
         },
         select_store_id(state, item) {
@@ -89,6 +89,12 @@ export const store = createStore({
             const currentStoreKey = state.queryParams.storeGroupKey || 'my';
             const storeList = storeMap[currentStoreKey];
             const storeKey = `ele_store_${currentStoreKey}`;
+            if (state.queryParams.storeId) {
+                storeMap[currentStoreKey].push({
+                    storeId: state.queryParams.storeId,
+                    storeName: `超市_${state.queryParams.storeId}`
+                });
+            }
             const historyList = storeList.map((item) => {
                 return {
                     collected: true,

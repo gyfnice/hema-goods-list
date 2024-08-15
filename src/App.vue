@@ -2,12 +2,12 @@
     <van-dialog
         :show-confirm-button="false"
         :show="showPhoto"
-        :title="currentGoodsItem.name"
+        :title="currentGoodsItem.title"
         :close-on-click-overlay="true"
     >
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
             <van-swipe-item v-for="item in photos" :key="item">
-                <van-image fit="cover" position="center" :src="item.url" />
+                <van-image fit="cover" position="center" :src="item" />
             </van-swipe-item>
         </van-swipe>
         <van-button @click="hidePhotoModal" type="primary" block

@@ -356,7 +356,7 @@ export default {
                         return (
                             pre +
                             item.goodsCount *
-                                Number(item.currentPrice) *
+                                Number(item.currentPrice.priceText) *
                                 (item.goodsChecked ? 1 : 0)
                         );
                     },
@@ -613,7 +613,7 @@ export default {
                                     item.goodsCount = 0;
                                     return item;
                                 }) || [],
-                            'name'
+                            'eleItemId'
                         ),
                         [
                             function (food) {
@@ -636,14 +636,18 @@ export default {
                         showToast(res?.data?.message);
                         return;
                     }
-                    storeMap[storeId] = _.uniqBy(
-                        (res?.data?.list || [])
-                            .filter((item) => item !== 'FAIL_SYS_USER_VALIDATE')
-                            .map((item) => {
-                                item.goodsCount = 0;
-                                return item;
-                            }),
-                        'name'
+                    storeMap[storeId] = _.reverse(
+                        _.uniqBy(
+                            (res?.data?.list || [])
+                                .filter(
+                                    (item) => item !== 'FAIL_SYS_USER_VALIDATE'
+                                )
+                                .map((item) => {
+                                    item.goodsCount = 0;
+                                    return item;
+                                }),
+                            'eleItemId'
+                        )
                     );
                 } catch (err) {
                     this.loading = false;
@@ -651,6 +655,7 @@ export default {
                 }
             }
             this.list = storeMap[storeId] || [];
+            console.log('this.list :>> ', this.list);
         }
     }
 };

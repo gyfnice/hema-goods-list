@@ -3,8 +3,8 @@ export const storeMap = {
         {
             storeId: '239350221',
             storeName: '盒马鲜生(长岭北路店)'
-        },
-        {
+        }
+        /* {
             storeId: '284868427',
             storeName: '永辉超市(观山湖万达广场店)'
         },
@@ -15,6 +15,6 @@ export const storeMap = {
         {
             storeId: '1057067220',
             storeName: '术木优选生活超市(碧海店)'
-        }
+        } */
     ]
 };

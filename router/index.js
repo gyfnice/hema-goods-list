@@ -73,7 +73,8 @@ router.get('/api/hema/recordCollectStore', async (context) => {
     const handleStore = async (storeId) => {
         const list = await run(storeId);
         //await recordPriceByStoreId({ goodsData: list || [], storeId });
-        return list?.slice(0, 60);
+        // return list?.slice(0, 60);
+        return list;
     };
     try {
         const rankList = await Promise.allSettled(

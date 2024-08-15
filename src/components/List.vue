@@ -3,13 +3,13 @@
         <van-card
             @click-thumb="selectCard(item)"
             v-for="(item, index) in list"
-            :key="item"
-            :num="item.realLeftNum"
+            :key="item.eleItemId"
+            :num="`剩${item?.stockModel?.leftQuantity}`"
             :tag="item?.couponTag?.actDesc || ''"
-            :origin-price="item.originalPrice"
-            :price="`${item.currentPrice}`"
-            :title="item.name"
-            :thumb="item?.photos?.[0]?.url || ''"
+            :origin-price="item?.originalPrice?.priceText"
+            :price="`${item?.currentPrice?.priceText}`"
+            :title="item.title"
+            :thumb="item?.mainPictUrl"
         >
             <template #desc>
                 <van-space>
@@ -42,42 +42,21 @@
                         type="primary"
                         >{{ item?.dishActivity?.[0]?.detailText }}</van-tag
                     >
-                    <van-tag v-if="item.startWith > 1" plain type="primary"
-                        >{{ item.startWith }}份起购</van-tag
+                    <van-tag v-if="+item.startWith > 1" plain type="primary"
+                        >{{ +item.startWith }}份起购</van-tag
                     >
 
                     <van-stepper
                         @change="stepperChange(item)"
                         :show-input="item.goodsCount > 0"
                         :show-minus="item.goodsCount > 0"
-                        :step="item.startWith || 1"
+                        :step="+item.startWith || 1"
                         :min="0"
                         v-model="item.goodsCount"
                         theme="round"
                         button-size="22"
                         disable-input
                     />
-                    <van-space direction="vertical">
-                        <van-tag
-                            :text-color="stringToColor(item.storeName)"
-                            :color="stringToColor(item.storeName)"
-                            v-if="hasCartCompare"
-                            plain
-                            type="primary"
-                            >{{ item.storeName }}</van-tag
-                        >
-                        <van-tag
-                            v-if="
-                                (hasShopName && !hasCartCompare) ||
-                                isCollectMode
-                            "
-                            @click="goShopStore(item)"
-                            size="small"
-                            plain
-                            type="primary"
-                            >去门店购买</van-tag
-                        >
-                    </van-space>
                 </van-space>
             </template>
         </van-card>
