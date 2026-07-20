@@ -51,7 +51,7 @@ router.post('/api/hema/storeGoodsByStoreId', async (context) => {
     console.log('storeId, storeName :>> ', storeId, storeName);
     info[storeId] = storeName;
     storeDataOnRedis(storeMapKey, info);
-    storeDataOnRedis(storeIdKey, list);
+    storeDataOnRedis(storeIdKey, list.slice(0, 50));
     context.response.body = {
         state: 1,
         msg: 'success'
