@@ -3,6 +3,7 @@ import { showToast } from 'vant';
 
 import {
     queryGoodsPriceHistory,
+    queryStoreList,
     storeDataInMemory,
     recordCollectStore
 } from '@/api/index.js';
@@ -85,15 +86,15 @@ export const store = createStore({
         }
     },
     actions: {
-        initStoreList({ state }) {
-            const currentStoreKey = state.queryParams.storeGroupKey || 'my';
-            const storeList = storeMap[currentStoreKey];
-            const storeKey = `ele_store_${currentStoreKey}`;
-            if (state.queryParams.storeId) {
-                storeMap[currentStoreKey].push({
-                    storeId: state.queryParams.storeId,
-                    storeName: `超市_${state.queryParams.storeId}`
-                });
+        async initStoreList({ state }) {
+            const res = await queryStoreList();
+            let storeMap = res?.data?.info || {}
+            let storeList = [];
+            for(let key in storeMap) {
+                storeList.push({
+                    storeId: key,
+                    storeName: storeMap[key]
+                })
             }
             const historyList = storeList.map((item) => {
                 return {
@@ -102,10 +103,6 @@ export const store = createStore({
                     text: item.storeName,
                     name: item.storeName
                 };
-            });
-            storeDataInMemory({
-                type: 'storeList',
-                storeMap
             });
             Store('historyList', historyList);
             recordCollectStore().then((list) => {

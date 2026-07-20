@@ -1,7 +1,7 @@
 const redis = require('redis');
 
 const isProd = process?.env?.DEV_MODE_SERVER !== 'development';
-
+let redisMap = {};
 // initialize using default config
 // const RedisClient = redis.createClient()
 
@@ -18,8 +18,11 @@ const connectRedis = async () => {
     return clientInstance;
 };
 
-const storeDataOnRedis = async (key, data, storeDay = 2) => {
-    if (!isProd) return;
+const storeDataOnRedis = async (key, data, storeDay = 3) => {
+    if (!isProd) {
+        redisMap[key] = data;
+        return;
+    }
     const client = await connectRedis();
     await client.set(key, JSON.stringify(data), {
         EX: 60 * 60 * 24 * (storeDay || 2)
@@ -34,7 +37,9 @@ const clearRedis = () => {
 };
 
 const getDataByKey = async (key) => {
-    if (!isProd) return null;
+    if (!isProd) {
+        return redisMap[key] || null;
+    }
     try {
         const client = await connectRedis();
         const info = await client.get(key);

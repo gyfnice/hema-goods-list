@@ -7,7 +7,7 @@
     "dev": "vite --port 3000",
     "dev:host": "vite  --host",
     "build": "vite build",
-    "dev:serve": "nodemon index.js",
+    "dev:serve": "DEV_MODE_SERVER=development nodemon index.js",
     "serve:app": "nodemon index.js",
     "pm2:app": "pm2 start index.js",
     "stop:app": "pm2 stop index.js",

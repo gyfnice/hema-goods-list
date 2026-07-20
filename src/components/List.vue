@@ -4,20 +4,20 @@
             @click-thumb="selectCard(item)"
             v-for="(item, index) in list"
             :key="item.eleItemId"
-            :num="`剩${item?.stockModel?.leftQuantity}`"
+            :num="`剩${item?.leftNum}`"
             :tag="item?.couponTag?.actDesc || ''"
-            :origin-price="item?.originalPrice?.priceText"
-            :price="`${item?.currentPrice?.priceText}`"
-            :title="item.title"
+            :origin-price="item?.originalPrice"
+            :price="`${item?.currentPrice}`"
+            :title="`${item.title}`"
             :thumb="item?.mainPictUrl"
         >
             <template #desc>
                 <van-space>
                     <span>{{ item.sellText }}</span>
-                    <van-tag>排名:{{ index + 1 }}</van-tag>
-                    <van-tag v-if="isCollectMode" plain
-                        >分数:{{
-                            Number(item.priceSortWeight).toFixed(2) || 0
+                    <van-tag plain>{{item.storeName}}</van-tag>
+                    <van-tag v-if="item.historyPriceRecords" plain
+                        >历史低价:{{
+                            item.historyPriceRecords[0].minPrice/100 || ''
                         }}</van-tag
                     >
                 </van-space>

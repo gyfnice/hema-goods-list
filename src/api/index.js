@@ -30,6 +30,11 @@ export const storeDataInMemory = (data) => {
         }
     });
 };
+export const queryStoreList = (params) => {
+    return axios.get(`/api/hema/queryStoreList`, {
+        params
+    });
+};
 export const recordCollectStore = async () => {
     const storeIds = (Store('historyList') || [])
         .filter((item) => item.collected)

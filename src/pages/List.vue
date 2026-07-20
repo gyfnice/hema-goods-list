@@ -302,7 +302,6 @@ export default {
         isCollectMode() {
             return (
                 !this.$route.query.isShop &&
-                this.collectStoreList.length > 0 &&
                 !this.$route.query.storeId
             );
         },
@@ -387,10 +386,10 @@ export default {
                 }),
                 (item) => {
                     if (item?.couponTag?.actDesc && !item.specCouponText) {
-                        return `${item?.couponTag?.actDesc}【${item?.couponTag?.categoryName}】`;
+                        return `${item?.couponTag?.actDesc}【${item?.couponTag?.categoryName || ''}】`;
                     }
                     if (item?.specCouponText) {
-                        return `优惠${item.specCouponText}`;
+                        return `优惠${item.specCouponText || ''}`;
                     }
                     return '无优惠';
                 }
@@ -601,27 +600,76 @@ export default {
         },
         async fetchList() {
             this.list = [];
+            function sortByDiscount(list = []) {
+                const map = new Map();
+
+                list.forEach(item => {
+                    // 商品唯一ID
+                    const id = item.itemId || item.eleItemId;
+
+                    if (!id) return;
+
+                    const originalPrice = Number(
+                        item.originalPriceModel?.price || 
+                        item.originalPrice || 
+                        0
+                    );
+
+                    const currentPrice = Number(
+                        item.currentPriceModel?.price ||
+                        item.currentPrice ||
+                        0
+                    );
+
+                    if (!originalPrice || !currentPrice) return;
+
+
+                    // 优惠金额
+                    const discountAmount = originalPrice - currentPrice;
+
+                    // 优惠比例
+                    const discountRate = discountAmount / originalPrice;
+
+
+                    const newItem = {
+                        ...item,
+                        discountAmount,     // 优惠多少分
+                        discountRate        // 优惠比例
+                    };
+
+
+                    // 去重：
+                    // 如果同一个商品存在多个，保留优惠力度最大的
+                    if (!map.has(id)) {
+                        map.set(id, newItem);
+                    } else {
+                        const oldItem = map.get(id);
+
+                        if (newItem.discountRate > oldItem.discountRate) {
+                            map.set(id, newItem);
+                        }
+                    }
+                });
+
+
+                return Array.from(map.values())
+                    .sort((a, b) => {
+                        // 优惠比例降序
+                        return b.discountRate - a.discountRate;
+                    });
+            }
             if (this.isCollectMode) {
-                this.list = _.reverse(
-                    _.sortBy(
-                        _.uniqBy(
-                            this.collectAllGoodsList
-                                .filter(
-                                    (item) => item !== 'FAIL_SYS_USER_VALIDATE'
-                                )
-                                .map((item) => {
-                                    item.goodsCount = 0;
-                                    return item;
-                                }) || [],
-                            'eleItemId'
-                        ),
-                        [
-                            function (food) {
-                                return food.priceSortWeight;
-                            }
-                        ]
-                    )
-                );
+                this.list = sortByDiscount(_.uniqBy(
+                    this.collectAllGoodsList
+                        .filter(
+                            (item) => item !== 'FAIL_SYS_USER_VALIDATE'
+                        )
+                        .map((item) => {
+                            item.goodsCount = 0;
+                            return item;
+                        }) || [],
+                    'eleItemId'
+                ))
                 return;
             }
             const storeId = this.currentStoreId;
@@ -636,19 +684,17 @@ export default {
                         showToast(res?.data?.message);
                         return;
                     }
-                    storeMap[storeId] = _.reverse(
-                        _.uniqBy(
-                            (res?.data?.list || [])
-                                .filter(
-                                    (item) => item !== 'FAIL_SYS_USER_VALIDATE'
-                                )
-                                .map((item) => {
-                                    item.goodsCount = 0;
-                                    return item;
-                                }),
-                            'eleItemId'
-                        )
-                    );
+                    storeMap[storeId] = _.uniqBy(
+                        (res?.data?.list || [])
+                            .filter(
+                                (item) => item !== 'FAIL_SYS_USER_VALIDATE'
+                            )
+                            .map((item) => {
+                                item.goodsCount = 0;
+                                return item;
+                            }),
+                        'eleItemId'
+                    )
                 } catch (err) {
                     this.loading = false;
                     this.list = [];

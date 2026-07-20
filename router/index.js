@@ -41,18 +41,27 @@ router.post('/api/hema/queryStoreFromRedis', async (context) => {
 router.post('/api/hema/storeGoodsByStoreId', async (context) => {
     // context 上下文
     const queryParams = context.request.body;
-    const { storeId, type, list, storeMap } = queryParams;
-    if (type === 'storeList') {
-        console.log('type :>> ', type, storeMap);
-        storeDataOnRedis('ele_store_list_map', storeMap);
-    } else {
-        const storeIdKey = `ele_${storeId}`;
-        console.log('queryParams.list :>> ', storeIdKey, list);
-        storeDataOnRedis(storeIdKey, list);
+    const { storeId, type, list, storeMap, storeName } = queryParams;
+    const storeIdKey = `ele_${storeId}`;
+    const storeMapKey = 'ele_store_list_map';
+    let info = await getDataByKey(storeMapKey);
+    if(!info) {
+        info = {};
     }
+    console.log('storeId, storeName :>> ', storeId, storeName);
+    info[storeId] = storeName;
+    storeDataOnRedis(storeMapKey, info);
+    storeDataOnRedis(storeIdKey, list);
     context.response.body = {
         state: 1,
         msg: 'success'
+    };
+});
+router.get('/api/hema/queryStoreList', async (context) => {
+    let info = await getDataByKey('ele_store_list_map');
+    context.response.body = {
+        state: 1,
+        info
     };
 });
 // 获取商品售卖数量
@@ -72,8 +81,6 @@ router.get('/api/hema/recordCollectStore', async (context) => {
     const storeIds = queryParams.storeIds.split(',');
     const handleStore = async (storeId) => {
         const list = await run(storeId);
-        //await recordPriceByStoreId({ goodsData: list || [], storeId });
-        // return list?.slice(0, 60);
         return list;
     };
     try {
